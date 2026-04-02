@@ -1,85 +1,1120 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Bi-a App</title>
-
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0b1220">
-  <link rel="apple-touch-icon" href="icon-192.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Bi-a">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bắn Đền Bi-a</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1220;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 20px;
-      box-sizing: border-box;
+    :root{
+      --bg:#0b1220;
+      --panel:#1e293b;
+      --panel2:#111827;
+      --line:#334155;
+      --text:#f8fafc;
+      --muted:#94a3b8;
+      --green:#22c55e;
+      --red:#ef4444;
+      --blue:#2563eb;
+      --yellow:#facc15;
+      --orange:#f59e0b;
+      --shadow:0 10px 28px rgba(0,0,0,.35);
+      --radius:16px;
     }
-    .box {
-      max-width: 500px;
-      background: #121a2b;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    *{box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,#0f172a,#0b1220);
+      color:var(--text);
+      padding:16px;
     }
-    h1 {
-      margin-top: 0;
+    .app{max-width:1150px;margin:auto}
+    h1{margin:0 0 14px;text-align:center;font-size:28px}
+
+    .panel{
+      background:var(--panel);
+      border:1px solid rgba(148,163,184,.15);
+      border-radius:var(--radius);
+      padding:16px;
+      margin-bottom:14px;
+      box-shadow:var(--shadow);
     }
-    button {
-      background: #22c55e;
-      color: white;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 12px;
+
+    .toolbar,.toolbar-left{
+      display:flex;gap:8px;flex-wrap:wrap;align-items:center;
     }
-    button:hover {
-      background: #16a34a;
+    .toolbar{justify-content:space-between}
+
+    button{
+      border:none;
+      border-radius:10px;
+      padding:10px 12px;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      transition:.15s ease;
     }
-    #count {
-      font-size: 40px;
-      font-weight: bold;
-      margin: 16px 0;
+    button:hover{transform:translateY(-1px);opacity:.97}
+    button:active{transform:scale(.98)}
+    .primary{background:var(--green)}
+    .secondary{background:#334155}
+    .blue{background:var(--blue)}
+    .danger{background:var(--red)}
+    .orange{background:var(--orange)}
+    .ghost{background:transparent;border:1px solid var(--line)}
+    .small{padding:6px 10px;font-size:12px}
+
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}
+    .col-12{grid-column:span 12}
+    .col-6{grid-column:span 6}
+    .col-4{grid-column:span 4}
+    .col-3{grid-column:span 3}
+
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid var(--line);
+      background:#0f172a;
+      color:#fff;
+      outline:none;
+    }
+
+    .hidden{display:none}
+    .muted{color:var(--muted)}
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+    .stat{
+      background:#0f172a;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+    }
+    .stat .k{font-size:13px;color:var(--muted)}
+    .stat .v{font-size:20px;font-weight:800;margin-top:6px}
+    .money{color:var(--yellow)}
+
+    .score-grid{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:12px;
+    }
+    .player-row{
+      background:#0f172a;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+    }
+    .player-row-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .player-name{
+      font-size:20px;
+      font-weight:800;
+    }
+    .player-sub{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .ball-buttons{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+      gap:10px;
+    }
+    .ball-btn{
+      background:linear-gradient(180deg,#3b82f6,#2563eb);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      min-height:72px;
+      padding:12px;
+      box-shadow:0 8px 18px rgba(37,99,235,.25);
+    }
+    .ball-btn.active{
+      outline:3px solid rgba(250,204,21,.6);
+      filter:brightness(1.08);
+    }
+    .ball-label{font-size:16px;font-weight:800}
+    .ball-point{font-size:13px;opacity:.95;margin-top:4px}
+
+    .pending{
+      background:linear-gradient(180deg,#12233b,#0f172a);
+      border:1px solid rgba(250,204,21,.25);
+      border-radius:14px;
+      padding:14px;
+      margin-top:10px;
+    }
+    .pending-title{
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:6px;
+    }
+    .payer-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    .payer-btn{
+      background:#1d4ed8;
+      border-radius:12px;
+      min-height:62px;
+      padding:12px;
+      font-size:16px;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .payer-btn.suggest{
+      background:linear-gradient(180deg,#16a34a,#15803d);
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:12px;
+    }
+    th,td{
+      text-align:left;
+      padding:11px 10px;
+      border-bottom:1px solid #24324a;
+      background:#0f172a;
+      font-size:14px;
+    }
+    th{
+      color:#cbd5e1;
+      background:#111827;
+    }
+    tr:last-child td{border-bottom:none}
+
+    .history{
+      max-height:420px;
+      overflow:auto;
+      border:1px solid var(--line);
+      background:#0b1220;
+      border-radius:12px;
+      padding:10px;
+    }
+    .history-item{
+      border-bottom:1px dashed #24324a;
+      padding:10px 0;
+      font-size:13px;
+    }
+    .history-item:last-child{border-bottom:none}
+
+    .chip-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .chip{
+      background:#0f172a;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:8px 10px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:13px;
+    }
+
+    .empty{
+      padding:18px;
+      text-align:center;
+      color:var(--muted);
+      border:1px dashed var(--line);
+      border-radius:12px;
+      background:#0b1220;
+    }
+
+    .footer{
+      margin-top:8px;
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      background:#052e16;
+      color:#dcfce7;
+      border:1px solid rgba(34,197,94,.35);
+      padding:12px 14px;
+      border-radius:12px;
+      box-shadow:var(--shadow);
+      opacity:0;
+      transform:translateY(10px);
+      pointer-events:none;
+      transition:.25s ease;
+      z-index:9999;
+      max-width:340px;
+      font-size:14px;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media (max-width:760px){
+      .col-6,.col-4,.col-3{grid-column:span 12}
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .ball-buttons{grid-template-columns:repeat(2,1fr)}
+      .payer-grid{grid-template-columns:repeat(2,1fr)}
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Bi-a App</h1>
-    <p>Đây là app mẫu chạy bằng GitHub Pages và cài trên iPhone.</p>
-    <div id="count">0</div>
-    <button onclick="increase()">Tăng điểm</button>
+  <div class="app">
+    <h1>🎱 Bắn Đền Bi-a</h1>
+
+    <div class="panel">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <button class="secondary" onclick="toggleSettings()" id="toggleSettingsBtn">⚙️ Mở cài đặt</button>
+          <button class="orange" onclick="undoLast()">↩️ Hoàn tác</button>
+          <button class="danger" onclick="resetAll()">🧹 Reset</button>
+        </div>
+        <div class="muted" id="orderMini"></div>
+      </div>
+    </div>
+
+    <div id="settingsPanel">
+      <div class="panel">
+        <b>👥 Người chơi & thứ tự vòng</b>
+        <div class="grid" style="margin-top:10px;">
+          <div class="col-4">
+            <label>Thêm người chơi</label>
+            <input id="playerName" type="text" placeholder="Ví dụ: Khanh" />
+          </div>
+          <div class="col-4">
+            <label>Giá tiền / 1 điểm</label>
+            <input id="pointPrice" type="number" min="0" value="10000" />
+          </div>
+          <div class="col-4">
+            <label>Đặt người đầu vòng</label>
+            <select id="headPlayerSelect"></select>
+          </div>
+
+          <div class="col-12">
+            <div class="toolbar-left">
+              <button class="primary" onclick="addPlayer()">➕ Thêm người chơi</button>
+              <button class="secondary" onclick="rotateLeft()">↺ Xoay trái</button>
+              <button class="secondary" onclick="rotateRight()">↻ Xoay phải</button>
+              <button class="blue" onclick="applyHeadPlayer()">🎯 Đặt người đầu vòng</button>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div id="playersBox"></div>
+          </div>
+        </div>
+        <div class="footer">Thứ tự vòng chỉ dùng để gợi ý người trả mặc định.</div>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <b>⚙️ Luật bi ăn</b>
+          <div class="toolbar-left">
+            <button class="secondary small" onclick="applyPreset('369')">3-6-9</button>
+            <button class="secondary small" onclick="applyPreset('59')">5-9</button>
+            <button class="secondary small" onclick="applyPreset('10bi')">10 bi</button>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:10px;">
+          <div class="col-4">
+            <label>Bi</label>
+            <input id="ballNumber" type="number" min="1" placeholder="Ví dụ: 9" />
+          </div>
+          <div class="col-4">
+            <label>Điểm</label>
+            <input id="ballPoint" type="number" min="1" placeholder="Ví dụ: 3" />
+          </div>
+          <div class="col-4">
+            <label>&nbsp;</label>
+            <button class="primary" style="width:100%" onclick="addRule()">➕ Thêm luật bi</button>
+          </div>
+
+          <div class="col-12">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bi</th>
+                  <th>Điểm</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="rulesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <b>⚡ Ghi điểm nhanh</b>
+      <div class="footer">Chạm 1: chọn người ăn + bi • Chạm 2: chọn người trả</div>
+
+      <div id="pendingPanel" class="pending hidden"></div>
+      <div id="scoreBoard" class="score-grid"></div>
+    </div>
+
+    <div class="panel">
+      <div class="stats">
+        <div class="stat"><div class="k">Tổng người chơi</div><div class="v" id="statPlayers">0</div></div>
+        <div class="stat"><div class="k">Tổng lượt</div><div class="v" id="statEvents">0</div></div>
+        <div class="stat"><div class="k">Tổng điểm phát sinh</div><div class="v" id="statPoints">0</div></div>
+        <div class="stat"><div class="k">Tổng tiền chốt</div><div class="v money" id="statMoney">0đ</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <b>📊 Tổng kết người chơi</b>
+      <div style="overflow:auto;margin-top:10px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Người chơi</th>
+              <th>Điểm ăn được</th>
+              <th>Phải trả</th>
+              <th>Được nhận</th>
+              <th>Cân bằng</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <b>💸 Công nợ chốt cuối</b>
+      <div style="overflow:auto;margin-top:10px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Người mất tiền</th>
+              <th>Người nhận tiền</th>
+              <th>Điểm</th>
+              <th>Tiền</th>
+            </tr>
+          </thead>
+          <tbody id="debtBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="toolbar" style="margin-bottom:10px;">
+        <b>📜 Lịch sử</b>
+        <button class="ghost small" onclick="clearHistory()">Xoá lịch sử</button>
+      </div>
+      <div id="historyBox" class="history"></div>
+    </div>
   </div>
 
-  <script>
-    let count = localStorage.getItem("count") || 0;
-    const countEl = document.getElementById("count");
-    countEl.textContent = count;
+  <div id="toast" class="toast"></div>
 
-    function increase() {
-      count++;
-      localStorage.setItem("count", count);
-      countEl.textContent = count;
+  <script>
+    const STORAGE_KEY = 'bida_final_settlement_v2';
+
+    let state = {
+      pointPrice: 10000,
+      players: [],
+      rules: [
+        { ball: 3, point: 1 },
+        { ball: 6, point: 2 },
+        { ball: 9, point: 3 }
+      ],
+      events: [],
+      undoStack: [],
+      pending: null,
+      settingsOpen: true
+    };
+
+    function uid(){
+      return Date.now().toString(36) + Math.random().toString(36).slice(2,7);
     }
 
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("./service-worker.js");
+    function nowText(){
+      return new Date().toLocaleString('vi-VN', { hour12:false });
+    }
+
+    function formatMoney(n){
+      return (Number(n) || 0).toLocaleString('vi-VN') + 'đ';
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','&lt;')
+        .replaceAll('>','&gt;')
+        .replaceAll('"','&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function saveState(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return;
+      try{
+        const parsed = JSON.parse(raw);
+        state.pointPrice = parsed.pointPrice || 10000;
+        state.players = Array.isArray(parsed.players) ? parsed.players : [];
+        state.rules = Array.isArray(parsed.rules) ? parsed.rules : [];
+        state.events = Array.isArray(parsed.events) ? parsed.events : [];
+        state.undoStack = Array.isArray(parsed.undoStack) ? parsed.undoStack : [];
+        state.settingsOpen = typeof parsed.settingsOpen === 'boolean' ? parsed.settingsOpen : true;
+        state.pending = null;
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function snapshotUndo(){
+      state.undoStack.push(JSON.stringify({
+        pointPrice: state.pointPrice,
+        players: state.players,
+        rules: state.rules,
+        events: state.events,
+        settingsOpen: state.settingsOpen
+      }));
+      if(state.undoStack.length > 50) state.undoStack.shift();
+    }
+
+    function syncInputs(){
+      document.getElementById('pointPrice').value = state.pointPrice;
+    }
+
+    function showToast(message){
+      const t = document.getElementById('toast');
+      t.textContent = message;
+      t.classList.add('show');
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => t.classList.remove('show'), 1600);
+    }
+
+    function getPointPrice(){
+      const val = Math.max(0, parseInt(document.getElementById('pointPrice').value, 10) || 0);
+      state.pointPrice = val;
+      return val;
+    }
+
+    function toggleSettings(){
+      state.settingsOpen = !state.settingsOpen;
+      saveState();
+      renderSettings();
+    }
+
+    function renderSettings(){
+      const panel = document.getElementById('settingsPanel');
+      const btn = document.getElementById('toggleSettingsBtn');
+      if(state.settingsOpen){
+        panel.classList.remove('hidden');
+        btn.textContent = '🙈 Ẩn cài đặt';
+      }else{
+        panel.classList.add('hidden');
+        btn.textContent = '⚙️ Mở cài đặt';
+      }
+    }
+
+    function addPlayer(){
+      const input = document.getElementById('playerName');
+      const name = input.value.trim();
+      if(!name) return alert('Vui lòng nhập tên');
+      if(state.players.some(p => p.name.toLowerCase() === name.toLowerCase())){
+        return alert('Tên đã tồn tại');
+      }
+      snapshotUndo();
+      state.players.push({ id: uid(), name });
+      input.value = '';
+      saveState();
+      renderAll();
+    }
+
+    function removePlayer(id){
+      const p = state.players.find(x => x.id === id);
+      if(!p) return;
+      if(!confirm(`Xoá ${p.name}?`)) return;
+      snapshotUndo();
+      state.players = state.players.filter(x => x.id !== id);
+      state.events = state.events.filter(e => e.scorerId !== id && e.payerId !== id);
+      if(state.pending && (state.pending.scorerId === id || state.pending.payerSuggestionId === id)){
+        state.pending = null;
+      }
+      saveState();
+      renderAll();
+    }
+
+    function movePlayer(id, direction){
+      const i = state.players.findIndex(p => p.id === id);
+      const j = i + direction;
+      if(i < 0 || j < 0 || j >= state.players.length) return;
+      snapshotUndo();
+      [state.players[i], state.players[j]] = [state.players[j], state.players[i]];
+      saveState();
+      renderAll();
+    }
+
+    function rotateLeft(){
+      if(state.players.length < 2) return;
+      snapshotUndo();
+      const first = state.players.shift();
+      state.players.push(first);
+      saveState();
+      renderAll();
+    }
+
+    function rotateRight(){
+      if(state.players.length < 2) return;
+      snapshotUndo();
+      const last = state.players.pop();
+      state.players.unshift(last);
+      saveState();
+      renderAll();
+    }
+
+    function renderPlayersBox(){
+      const box = document.getElementById('playersBox');
+      if(!state.players.length){
+        box.innerHTML = '<div class="empty">Chưa có người chơi.</div>';
+        return;
+      }
+      box.innerHTML = `
+        <label>Thứ tự vòng hiện tại</label>
+        <div class="chip-list">
+          ${state.players.map((p,i)=>`
+            <div class="chip">
+              <span>${i+1}.</span>
+              <b>${escapeHtml(p.name)}</b>
+              <button class="ghost small" onclick="movePlayer('${p.id}',-1)">⬅</button>
+              <button class="ghost small" onclick="movePlayer('${p.id}',1)">➡</button>
+              <button class="danger small" onclick="removePlayer('${p.id}')">✕</button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderHeadPlayerSelect(){
+      const sel = document.getElementById('headPlayerSelect');
+      sel.innerHTML = state.players.length
+        ? state.players.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('')
+        : '<option value="">Chưa có người chơi</option>';
+    }
+
+    function applyHeadPlayer(){
+      const id = document.getElementById('headPlayerSelect').value;
+      if(!id) return;
+      const idx = state.players.findIndex(p => p.id === id);
+      if(idx < 0) return;
+      snapshotUndo();
+      state.players = [...state.players.slice(idx), ...state.players.slice(0, idx)];
+      saveState();
+      renderAll();
+    }
+
+    function addRule(){
+      const ball = parseInt(document.getElementById('ballNumber').value, 10);
+      const point = parseInt(document.getElementById('ballPoint').value, 10);
+      if(isNaN(ball) || ball <= 0) return alert('Bi không hợp lệ');
+      if(isNaN(point) || point <= 0) return alert('Điểm không hợp lệ');
+      if(state.rules.some(r => r.ball === ball)) return alert('Bi này đã tồn tại');
+      snapshotUndo();
+      state.rules.push({ ball, point });
+      state.rules.sort((a,b)=>a.ball-b.ball);
+      document.getElementById('ballNumber').value = '';
+      document.getElementById('ballPoint').value = '';
+      saveState();
+      renderAll();
+    }
+
+    function editRule(ball){
+      const rule = state.rules.find(r => r.ball === ball);
+      if(!rule) return;
+      const nextBall = prompt('Sửa số bi:', rule.ball);
+      if(nextBall === null) return;
+      const newBall = parseInt(nextBall, 10);
+      if(isNaN(newBall) || newBall <= 0) return alert('Số bi không hợp lệ');
+
+      const nextPoint = prompt(`Sửa số điểm cho bi ${newBall}:`, rule.point);
+      if(nextPoint === null) return;
+      const newPoint = parseInt(nextPoint, 10);
+      if(isNaN(newPoint) || newPoint <= 0) return alert('Điểm không hợp lệ');
+
+      if(state.rules.some(r => r.ball === newBall && r.ball !== ball)){
+        return alert('Bi mới đã tồn tại');
+      }
+
+      snapshotUndo();
+      rule.ball = newBall;
+      rule.point = newPoint;
+      state.rules.sort((a,b)=>a.ball-b.ball);
+      saveState();
+      renderAll();
+    }
+
+    function removeRule(ball){
+      if(!confirm(`Xoá luật bi ${ball}?`)) return;
+      snapshotUndo();
+      state.rules = state.rules.filter(r => r.ball !== ball);
+      if(state.pending && state.pending.ball === ball) state.pending = null;
+      saveState();
+      renderAll();
+    }
+
+    function applyPreset(type){
+      snapshotUndo();
+      if(type === '369'){
+        state.rules = [
+          { ball: 3, point: 1 },
+          { ball: 6, point: 2 },
+          { ball: 9, point: 3 }
+        ];
+      }
+      if(type === '59'){
+        state.rules = [
+          { ball: 5, point: 1 },
+          { ball: 9, point: 2 }
+        ];
+      }
+      if(type === '10bi'){
+        state.rules = [
+          { ball: 2, point: 1 },
+          { ball: 4, point: 2 },
+          { ball: 6, point: 3 },
+          { ball: 8, point: 4 },
+          { ball: 10, point: 5 }
+        ];
+      }
+      saveState();
+      renderAll();
+    }
+
+    function renderRules(){
+      const body = document.getElementById('rulesBody');
+      if(!state.rules.length){
+        body.innerHTML = '<tr><td colspan="3" class="muted">Chưa có luật bi.</td></tr>';
+        return;
+      }
+      body.innerHTML = [...state.rules].sort((a,b)=>a.ball-b.ball).map(r=>`
+        <tr>
+          <td>${r.ball}</td>
+          <td>${r.point}</td>
+          <td>
+            <div class="toolbar-left">
+              <button class="ghost small" onclick="editRule(${r.ball})">Sửa</button>
+              <button class="danger small" onclick="removeRule(${r.ball})">Xoá</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function getSuggestedPayer(scorerId){
+      const n = state.players.length;
+      if(n < 2) return null;
+      const i = state.players.findIndex(p => p.id === scorerId);
+      if(i === -1) return null;
+      return state.players[(i - 1 + n) % n];
+    }
+
+    function startPendingScore(scorerId, ball){
+      if(state.players.length < 2) return alert('Cần ít nhất 2 người chơi');
+      const scorer = state.players.find(p => p.id === scorerId);
+      const rule = state.rules.find(r => r.ball === ball);
+      if(!scorer || !rule) return alert('Dữ liệu không hợp lệ');
+
+      const suggested = getSuggestedPayer(scorerId);
+
+      state.pending = {
+        scorerId: scorer.id,
+        scorerName: scorer.name,
+        ball: rule.ball,
+        point: rule.point,
+        payerSuggestionId: suggested ? suggested.id : null
+      };
+
+      renderPending();
+      renderScoreBoard();
+    }
+
+    function cancelPending(){
+      state.pending = null;
+      renderPending();
+      renderScoreBoard();
+    }
+
+    function confirmPending(payerId){
+      if(!state.pending) return;
+      const payer = state.players.find(p => p.id === payerId);
+      const scorer = state.players.find(p => p.id === state.pending.scorerId);
+      if(!payer || !scorer) return;
+      if(payer.id === scorer.id) return alert('Người trả không thể là người ăn');
+
+      snapshotUndo();
+      const price = getPointPrice();
+
+      state.events.unshift({
+        id: uid(),
+        time: nowText(),
+        scorerId: scorer.id,
+        scorerName: scorer.name,
+        payerId: payer.id,
+        payerName: payer.name,
+        ball: state.pending.ball,
+        point: state.pending.point,
+        pointPrice: price,
+        orderSnapshot: state.players.map(p => p.name)
+      });
+
+      const msg = `${scorer.name} ăn bi ${state.pending.ball}, ${payer.name} trả ${state.pending.point} điểm`;
+      state.pending = null;
+      saveState();
+      renderAll();
+      showToast(msg);
+    }
+
+    function renderPending(){
+      const box = document.getElementById('pendingPanel');
+      if(!state.pending){
+        box.classList.add('hidden');
+        box.innerHTML = '';
+        return;
+      }
+
+      const payers = state.players.filter(p => p.id !== state.pending.scorerId);
+
+      box.classList.remove('hidden');
+      box.innerHTML = `
+        <div class="pending-title">🎯 ${escapeHtml(state.pending.scorerName)} ăn bi ${state.pending.ball} = ${state.pending.point} điểm</div>
+        <div class="muted">Chọn người trả để ghi ngay.</div>
+        <div class="payer-grid">
+          ${payers.map(p=>`
+            <button class="payer-btn ${p.id===state.pending.payerSuggestionId?'suggest':''}" onclick="confirmPending('${p.id}')">
+              ${escapeHtml(p.name)}
+              ${p.id===state.pending.payerSuggestionId?'<div style="font-size:12px;font-weight:600;opacity:.92;margin-top:4px;">Gợi ý</div>':''}
+            </button>
+          `).join('')}
+        </div>
+        <div class="toolbar-left" style="margin-top:12px;">
+          <button class="ghost" onclick="cancelPending()">❌ Huỷ</button>
+        </div>
+      `;
+    }
+
+    function renderScoreBoard(){
+      const box = document.getElementById('scoreBoard');
+
+      if(state.players.length < 2){
+        box.innerHTML = '<div class="empty">Cần ít nhất 2 người chơi để ghi điểm.</div>';
+        return;
+      }
+      if(!state.rules.length){
+        box.innerHTML = '<div class="empty">Chưa có luật bi.</div>';
+        return;
+      }
+
+      const rules = [...state.rules].sort((a,b)=>a.ball-b.ball);
+
+      box.innerHTML = state.players.map(player=>{
+        const suggested = getSuggestedPayer(player.id);
+        return `
+          <div class="player-row">
+            <div class="player-row-top">
+              <div>
+                <div class="player-name">${escapeHtml(player.name)}</div>
+                <div class="player-sub">Người trả gợi ý: <b>${escapeHtml(suggested ? suggested.name : '-')}</b></div>
+              </div>
+            </div>
+            <div class="ball-buttons">
+              ${rules.map(rule=>{
+                const active = state.pending && state.pending.scorerId===player.id && state.pending.ball===rule.ball;
+                return `
+                  <button class="ball-btn ${active?'active':''}" onclick="startPendingScore('${player.id}',${rule.ball})">
+                    <div class="ball-label">Bi ${rule.ball}</div>
+                    <div class="ball-point">+${rule.point} điểm</div>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function buildSummary(){
+      const summary = {};
+      state.players.forEach(p=>{
+        summary[p.id] = {
+          name: p.name,
+          wonPoints: 0,
+          payPoints: 0,
+          receivePoints: 0
+        };
+      });
+
+      state.events.forEach(e=>{
+        if(summary[e.scorerId]){
+          summary[e.scorerId].wonPoints += e.point;
+          summary[e.scorerId].receivePoints += e.point;
+        }
+        if(summary[e.payerId]){
+          summary[e.payerId].payPoints += e.point;
+        }
+      });
+
+      return summary;
+    }
+
+    function getBalances(){
+      const summary = buildSummary();
+      return state.players.map(p=>{
+        const x = summary[p.id];
+        return {
+          id: p.id,
+          name: p.name,
+          wonPoints: x.wonPoints,
+          payPoints: x.payPoints,
+          receivePoints: x.receivePoints,
+          balance: x.receivePoints - x.payPoints
+        };
       });
     }
+
+    function calculateSettlementDebts(){
+      const balances = getBalances();
+
+      const debtors = balances
+        .filter(x => x.balance < 0)
+        .map(x => ({
+          id: x.id,
+          name: x.name,
+          points: Math.abs(x.balance)
+        }));
+
+      const creditors = balances
+        .filter(x => x.balance > 0)
+        .map(x => ({
+          id: x.id,
+          name: x.name,
+          points: x.balance
+        }));
+
+      const result = [];
+      let i = 0, j = 0;
+
+      while(i < debtors.length && j < creditors.length){
+        const pay = Math.min(debtors[i].points, creditors[j].points);
+
+        result.push({
+          payerName: debtors[i].name,
+          receiverName: creditors[j].name,
+          points: pay,
+          money: pay * state.pointPrice
+        });
+
+        debtors[i].points -= pay;
+        creditors[j].points -= pay;
+
+        if(debtors[i].points === 0) i++;
+        if(creditors[j].points === 0) j++;
+      }
+
+      return result;
+    }
+
+    function renderStats(){
+      const totalPlayers = state.players.length;
+      const totalEvents = state.events.length;
+      const totalPoints = state.events.reduce((s,e)=>s + e.point, 0);
+
+      const balances = getBalances();
+      const netPoints = balances
+        .filter(x => x.balance < 0)
+        .reduce((s,x)=>s + Math.abs(x.balance), 0);
+
+      const totalMoney = netPoints * state.pointPrice;
+
+      document.getElementById('statPlayers').textContent = totalPlayers;
+      document.getElementById('statEvents').textContent = totalEvents;
+      document.getElementById('statPoints').textContent = totalPoints;
+      document.getElementById('statMoney').textContent = formatMoney(totalMoney);
+    }
+
+    function renderSummary(){
+      const body = document.getElementById('summaryBody');
+      if(!state.players.length){
+        body.innerHTML = '<tr><td colspan="5" class="muted">Chưa có dữ liệu.</td></tr>';
+        return;
+      }
+
+      const balances = getBalances();
+
+      body.innerHTML = balances.map(x=>`
+        <tr>
+          <td>${escapeHtml(x.name)}</td>
+          <td>${x.wonPoints}</td>
+          <td>${x.payPoints}</td>
+          <td>${x.receivePoints}</td>
+          <td>${x.balance > 0 ? '+' : ''}${x.balance}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderDebts(){
+      const body = document.getElementById('debtBody');
+      const debts = calculateSettlementDebts();
+
+      if(!debts.length){
+        body.innerHTML = '<tr><td colspan="4" class="muted">Không có công nợ.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = debts.map(x=>`
+        <tr>
+          <td>${escapeHtml(x.payerName)}</td>
+          <td>${escapeHtml(x.receiverName)}</td>
+          <td>${x.points}</td>
+          <td>${formatMoney(x.money)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function removeEvent(id){
+      if(!confirm('Xoá dòng lịch sử này?')) return;
+      snapshotUndo();
+      state.events = state.events.filter(e => e.id !== id);
+      saveState();
+      renderAll();
+    }
+
+    function clearHistory(){
+      if(!state.events.length) return;
+      if(!confirm('Xoá toàn bộ lịch sử?')) return;
+      snapshotUndo();
+      state.events = [];
+      saveState();
+      renderAll();
+    }
+
+    function renderHistory(){
+      const box = document.getElementById('historyBox');
+      if(!state.events.length){
+        box.innerHTML = '<div class="empty">Chưa có lịch sử.</div>';
+        return;
+      }
+
+      box.innerHTML = state.events.map((e,idx)=>`
+        <div class="history-item">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
+            <div>
+              <b>#${state.events.length - idx}</b>
+              <span class="muted"> | ${escapeHtml(e.time)}</span>
+            </div>
+            <button class="danger small" onclick="removeEvent('${e.id}')">Xoá</button>
+          </div>
+          <div style="margin-top:6px;line-height:1.55;">
+            <b>${escapeHtml(e.scorerName)}</b> ăn <b>bi ${e.ball}</b> được <b>${e.point} điểm</b>.<br>
+            <b>${escapeHtml(e.payerName)}</b> là người trả <b>${e.point}</b> điểm.<br>
+            <span class="muted">Giá điểm lúc ghi: ${formatMoney(e.pointPrice)} / điểm</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderOrderMini(){
+      const el = document.getElementById('orderMini');
+      if(!state.players.length){
+        el.textContent = 'Chưa có người chơi';
+        return;
+      }
+      el.textContent = 'Vòng hiện tại: ' + state.players.map(p=>p.name).join(' → ');
+    }
+
+    function undoLast(){
+      if(!state.undoStack.length) return alert('Không có thao tác để hoàn tác');
+      const prev = JSON.parse(state.undoStack.pop());
+      state.pointPrice = prev.pointPrice;
+      state.players = prev.players;
+      state.rules = prev.rules;
+      state.events = prev.events;
+      state.settingsOpen = prev.settingsOpen;
+      state.pending = null;
+      syncInputs();
+      saveState();
+      renderAll();
+      showToast('Đã hoàn tác thao tác gần nhất');
+    }
+
+    function resetAll(){
+      if(!confirm('Reset toàn bộ dữ liệu?')) return;
+      snapshotUndo();
+      state.pointPrice = 10000;
+      state.players = [];
+      state.rules = [
+        { ball: 3, point: 1 },
+        { ball: 6, point: 2 },
+        { ball: 9, point: 3 }
+      ];
+      state.events = [];
+      state.pending = null;
+      state.settingsOpen = true;
+      syncInputs();
+      saveState();
+      renderAll();
+    }
+
+    function renderAll(){
+      if(state.players.length === 0) state.settingsOpen = true;
+      renderSettings();
+      renderPlayersBox();
+      renderHeadPlayerSelect();
+      renderRules();
+      renderPending();
+      renderScoreBoard();
+      renderStats();
+      renderSummary();
+      renderDebts();
+      renderHistory();
+      renderOrderMini();
+    }
+
+    document.getElementById('playerName').addEventListener('keydown', e=>{
+      if(e.key === 'Enter') addPlayer();
+    });
+
+    document.getElementById('pointPrice').addEventListener('input', ()=>{
+      state.pointPrice = getPointPrice();
+      saveState();
+      renderStats();
+      renderDebts();
+      renderHistory();
+    });
+
+    loadState();
+    syncInputs();
+
+    if(state.players.length > 0 && state.settingsOpen === true){
+      state.settingsOpen = false;
+    }
+
+    renderAll();
   </script>
 </body>
 </html>
