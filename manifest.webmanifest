@@ -1,8 +1,8 @@
 {
   "name": "Bắn Đền Bi-a",
   "short_name": "Bi-a",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/bida-app/",
+  "scope": "/bida-app/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
