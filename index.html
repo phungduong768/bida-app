@@ -32,7 +32,7 @@
       padding:16px;
     }
 
-    .app{max-width:1150px;margin:auto}
+    .app{max-width:1200px;margin:auto}
     h1{margin:0 0 14px;text-align:center;font-size:28px}
 
     .panel{
@@ -197,8 +197,9 @@
       border:1px solid rgba(255,255,255,.08);
     }
 
-    .payer-btn.suggest{
-      background:linear-gradient(180deg,#16a34a,#15803d);
+    .payer-btn.selected{
+      outline:3px solid rgba(250,204,21,.7);
+      background:linear-gradient(180deg,#2563eb,#1d4ed8);
     }
 
     table{
@@ -214,6 +215,7 @@
       border-bottom:1px solid #24324a;
       background:#0f172a;
       font-size:14px;
+      vertical-align:top;
     }
 
     th{
@@ -289,13 +291,39 @@
       pointer-events:none;
       transition:.25s ease;
       z-index:9999;
-      max-width:340px;
+      max-width:360px;
       font-size:14px;
     }
 
     .toast.show{
       opacity:1;
       transform:translateY(0);
+    }
+
+    .plus{color:#22c55e;font-weight:800}
+    .minus{color:#ef4444;font-weight:800}
+    .zero{color:#cbd5e1;font-weight:800}
+
+    details{
+      background:#0f172a;
+      border:1px solid #24324a;
+      border-radius:12px;
+      padding:10px 12px;
+      margin-bottom:10px;
+    }
+
+    summary{
+      cursor:pointer;
+      font-weight:800;
+      outline:none;
+    }
+
+    .round-card{
+      background:#0f172a;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:12px;
     }
 
     @media (max-width:760px){
@@ -315,7 +343,7 @@
         <div class="toolbar-left">
           <button class="secondary" onclick="toggleSettings()" id="toggleSettingsBtn">⚙️ Mở cài đặt</button>
           <button class="orange" onclick="undoLast()">↩️ Hoàn tác</button>
-          <button class="danger" onclick="resetAll()">🧹 Reset</button>
+          <button class="danger" onclick="resetAll()">🧹 Reset tất cả</button>
         </div>
         <div class="muted" id="orderMini"></div>
       </div>
@@ -351,7 +379,6 @@
             <div id="playersBox"></div>
           </div>
         </div>
-        <div class="footer">Thứ tự vòng chỉ dùng để gợi ý người trả mặc định.</div>
       </div>
 
       <div class="panel">
@@ -395,36 +422,62 @@
     </div>
 
     <div class="panel">
-      <b>⚡ Ghi điểm nhanh</b>
-      <div class="footer">Chạm 1: chọn người ăn + bi • Chạm 2: chọn người trả</div>
+      <div class="toolbar">
+        <div>
+          <b>🎯 Ván hiện tại</b>
+          <div class="footer">Bấm người ăn → chọn bi → chọn người bị ăn điểm</div>
+        </div>
+        <div class="toolbar-left">
+          <button class="primary" onclick="closeCurrentRound()">✅ Chốt ván</button>
+          <button class="danger" onclick="resetCurrentRound()">🗑️ Xoá ván hiện tại</button>
+        </div>
+      </div>
 
+      <div id="roundInfo" class="footer"></div>
       <div id="pendingPanel" class="pending hidden"></div>
       <div id="scoreBoard" class="score-grid"></div>
     </div>
 
     <div class="panel">
-      <div class="stats">
-        <div class="stat"><div class="k">Tổng người chơi</div><div class="v" id="statPlayers">0</div></div>
-        <div class="stat"><div class="k">Tổng lượt</div><div class="v" id="statEvents">0</div></div>
-        <div class="stat"><div class="k">Tổng điểm phát sinh</div><div class="v" id="statPoints">0</div></div>
-        <div class="stat"><div class="k">Tổng tiền chốt</div><div class="v money" id="statMoney">0đ</div></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <b>📊 Tổng kết người chơi</b>
+      <b>📌 Tổng kết ván hiện tại</b>
       <div style="overflow:auto;margin-top:10px;">
         <table>
           <thead>
             <tr>
               <th>Người chơi</th>
-              <th>Điểm ăn được</th>
-              <th>Phải trả</th>
-              <th>Được nhận</th>
-              <th>Cân bằng</th>
+              <th>Điểm ăn trong ván</th>
+              <th>Điểm mất trong ván</th>
+              <th>Cân bằng ván này</th>
             </tr>
           </thead>
-          <tbody id="summaryBody"></tbody>
+          <tbody id="currentRoundSummaryBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="stats">
+        <div class="stat"><div class="k">Tổng người chơi</div><div class="v" id="statPlayers">0</div></div>
+        <div class="stat"><div class="k">Tổng số ván đã chốt</div><div class="v" id="statRounds">0</div></div>
+        <div class="stat"><div class="k">Lượt trong ván hiện tại</div><div class="v" id="statCurrentEvents">0</div></div>
+        <div class="stat"><div class="k">Tổng tiền chốt cuối</div><div class="v money" id="statMoney">0đ</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <b>📊 Tổng chung tất cả các ván</b>
+      <div style="overflow:auto;margin-top:10px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Người chơi</th>
+              <th>Tổng điểm ăn</th>
+              <th>Tổng điểm mất</th>
+              <th>Cân bằng</th>
+              <th>Tiền</th>
+            </tr>
+          </thead>
+          <tbody id="overallSummaryBody"></tbody>
         </table>
       </div>
     </div>
@@ -447,18 +500,23 @@
     </div>
 
     <div class="panel">
+      <b>🕘 Lịch sử lượt của ván hiện tại</b>
+      <div id="currentRoundHistory" class="history" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="panel">
       <div class="toolbar" style="margin-bottom:10px;">
-        <b>📜 Lịch sử</b>
-        <button class="ghost small" onclick="clearHistory()">Xoá lịch sử</button>
+        <b>📚 Lịch sử các ván đã chốt</b>
+        <button class="ghost small" onclick="clearRoundHistory()">Xoá lịch sử ván</button>
       </div>
-      <div id="historyBox" class="history"></div>
+      <div id="roundHistoryBox"></div>
     </div>
   </div>
 
   <div id="toast" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'bida_final_settlement_v2';
+    const STORAGE_KEY = 'bida_round_history_full_v1';
 
     let state = {
       pointPrice: 10000,
@@ -468,7 +526,11 @@
         { ball: 6, point: 2 },
         { ball: 9, point: 3 }
       ],
-      events: [],
+      currentRound: {
+        number: 1,
+        events: []
+      },
+      roundHistory: [],
       undoStack: [],
       pending: null,
       settingsOpen: true
@@ -507,9 +569,12 @@
         state.pointPrice = parsed.pointPrice || 10000;
         state.players = Array.isArray(parsed.players) ? parsed.players : [];
         state.rules = Array.isArray(parsed.rules) ? parsed.rules : [];
-        state.events = Array.isArray(parsed.events) ? parsed.events : [];
+        state.roundHistory = Array.isArray(parsed.roundHistory) ? parsed.roundHistory : [];
         state.undoStack = Array.isArray(parsed.undoStack) ? parsed.undoStack : [];
         state.settingsOpen = typeof parsed.settingsOpen === 'boolean' ? parsed.settingsOpen : true;
+        state.currentRound = parsed.currentRound && Array.isArray(parsed.currentRound.events)
+          ? parsed.currentRound
+          : { number: (state.roundHistory.length + 1), events: [] };
         state.pending = null;
       }catch(e){
         console.error(e);
@@ -521,7 +586,8 @@
         pointPrice: state.pointPrice,
         players: state.players,
         rules: state.rules,
-        events: state.events,
+        currentRound: state.currentRound,
+        roundHistory: state.roundHistory,
         settingsOpen: state.settingsOpen
       }));
       if(state.undoStack.length > 50) state.undoStack.shift();
@@ -582,11 +648,19 @@
       if(!p) return;
       if(!confirm(`Xoá ${p.name}?`)) return;
       snapshotUndo();
+
       state.players = state.players.filter(x => x.id !== id);
-      state.events = state.events.filter(e => e.scorerId !== id && e.payerId !== id);
-      if(state.pending && (state.pending.scorerId === id || state.pending.payerSuggestionId === id)){
+      state.currentRound.events = state.currentRound.events.filter(e => e.scorerId !== id && e.victimId !== id);
+      state.roundHistory = state.roundHistory.map(round => ({
+        ...round,
+        events: round.events.filter(e => e.scorerId !== id && e.victimId !== id),
+        summary: round.summary.filter(s => s.playerId !== id)
+      })).filter(round => round.summary.length > 0);
+
+      if(state.pending && (state.pending.scorerId === id || state.pending.victimId === id)){
         state.pending = null;
       }
+
       saveState();
       renderAll();
     }
@@ -756,28 +830,19 @@
       `).join('');
     }
 
-    function getSuggestedPayer(scorerId){
-      const n = state.players.length;
-      if(n < 2) return null;
-      const i = state.players.findIndex(p => p.id === scorerId);
-      if(i === -1) return null;
-      return state.players[(i - 1 + n) % n];
-    }
-
     function startPendingScore(scorerId, ball){
       if(state.players.length < 2) return alert('Cần ít nhất 2 người chơi');
       const scorer = state.players.find(p => p.id === scorerId);
       const rule = state.rules.find(r => r.ball === ball);
       if(!scorer || !rule) return alert('Dữ liệu không hợp lệ');
 
-      const suggested = getSuggestedPayer(scorerId);
-
       state.pending = {
         scorerId: scorer.id,
         scorerName: scorer.name,
         ball: rule.ball,
         point: rule.point,
-        payerSuggestionId: suggested ? suggested.id : null
+        victimId: null,
+        victimName: null
       };
 
       renderPending();
@@ -790,34 +855,84 @@
       renderScoreBoard();
     }
 
-    function confirmPending(payerId){
+    function chooseVictim(victimId){
       if(!state.pending) return;
-      const payer = state.players.find(p => p.id === payerId);
+      const victim = state.players.find(p => p.id === victimId);
       const scorer = state.players.find(p => p.id === state.pending.scorerId);
-      if(!payer || !scorer) return;
-      if(payer.id === scorer.id) return alert('Người trả không thể là người ăn');
+      if(!victim || !scorer) return;
+      if(victim.id === scorer.id) return alert('Không thể ăn điểm của chính mình');
+
+      state.pending.victimId = victim.id;
+      state.pending.victimName = victim.name;
+      renderPending();
+    }
+
+    function confirmPending(){
+      if(!state.pending) return;
+      if(!state.pending.victimId) return alert('Bạn chưa chọn người bị ăn điểm');
+
+      const victim = state.players.find(p => p.id === state.pending.victimId);
+      const scorer = state.players.find(p => p.id === state.pending.scorerId);
+      if(!victim || !scorer) return;
 
       snapshotUndo();
-      const price = getPointPrice();
 
-      state.events.unshift({
+      state.currentRound.events.unshift({
         id: uid(),
         time: nowText(),
         scorerId: scorer.id,
         scorerName: scorer.name,
-        payerId: payer.id,
-        payerName: payer.name,
+        victimId: victim.id,
+        victimName: victim.name,
         ball: state.pending.ball,
         point: state.pending.point,
-        pointPrice: price,
-        orderSnapshot: state.players.map(p => p.name)
+        pointPrice: getPointPrice()
       });
 
-      const msg = `${scorer.name} ăn bi ${state.pending.ball}, ${payer.name} trả ${state.pending.point} điểm`;
+      const msg = `${scorer.name} ăn bi ${state.pending.ball} của ${victim.name} (${state.pending.point} điểm)`;
       state.pending = null;
       saveState();
       renderAll();
       showToast(msg);
+    }
+
+    function getRoundSummaryFromEvents(events){
+      const map = {};
+
+      state.players.forEach(p=>{
+        map[p.id] = {
+          playerId: p.id,
+          name: p.name,
+          gain: 0,
+          lose: 0,
+          balance: 0
+        };
+      });
+
+      events.forEach(e=>{
+        if(map[e.scorerId]){
+          map[e.scorerId].gain += e.point;
+          map[e.scorerId].balance += e.point;
+        }
+        if(map[e.victimId]){
+          map[e.victimId].lose += e.point;
+          map[e.victimId].balance -= e.point;
+        }
+      });
+
+      return state.players.map(p => map[p.id]);
+    }
+
+    function getCurrentRoundSummary(){
+      return getRoundSummaryFromEvents(state.currentRound.events);
+    }
+
+    function getOverallSummary(){
+      const allEvents = [
+        ...state.currentRound.events,
+        ...state.roundHistory.flatMap(r => r.events || [])
+      ];
+      return getRoundSummaryFromEvents(allEvents);
     }
 
     function renderPending(){
@@ -828,21 +943,24 @@
         return;
       }
 
-      const payers = state.players.filter(p => p.id !== state.pending.scorerId);
+      const victims = state.players.filter(p => p.id !== state.pending.scorerId);
 
       box.classList.remove('hidden');
       box.innerHTML = `
         <div class="pending-title">🎯 ${escapeHtml(state.pending.scorerName)} ăn bi ${state.pending.ball} = ${state.pending.point} điểm</div>
-        <div class="muted">Chọn người trả để ghi ngay.</div>
+        <div class="muted">Chọn người bị ăn điểm trong lượt này.</div>
+
         <div class="payer-grid">
-          ${payers.map(p=>`
-            <button class="payer-btn ${p.id===state.pending.payerSuggestionId?'suggest':''}" onclick="confirmPending('${p.id}')">
+          ${victims.map(p=>`
+            <button class="payer-btn ${p.id===state.pending.victimId?'selected':''}" onclick="chooseVictim('${p.id}')">
               ${escapeHtml(p.name)}
-              ${p.id===state.pending.payerSuggestionId?'<div style="font-size:12px;font-weight:600;opacity:.92;margin-top:4px;">Gợi ý</div>':''}
+              ${p.id===state.pending.victimId?'<div style="font-size:12px;font-weight:700;margin-top:4px;">Đã chọn</div>':''}
             </button>
           `).join('')}
         </div>
+
         <div class="toolbar-left" style="margin-top:12px;">
+          <button class="primary" onclick="confirmPending()">✅ Ghi lượt này</button>
           <button class="ghost" onclick="cancelPending()">❌ Huỷ</button>
         </div>
       `;
@@ -864,13 +982,12 @@
       const rules = [...state.rules].sort((a,b)=>a.ball-b.ball);
 
       box.innerHTML = state.players.map(player=>{
-        const suggested = getSuggestedPayer(player.id);
         return `
           <div class="player-row">
             <div class="player-row-top">
               <div>
                 <div class="player-name">${escapeHtml(player.name)}</div>
-                <div class="player-sub">Người trả gợi ý: <b>${escapeHtml(suggested ? suggested.name : '-')}</b></div>
+                <div class="player-sub">Bấm bi để ghi người này là người ăn</div>
               </div>
             </div>
             <div class="ball-buttons">
@@ -889,52 +1006,51 @@
       }).join('');
     }
 
-    function buildSummary(){
-      const summary = {};
-      state.players.forEach(p=>{
-        summary[p.id] = {
-          name: p.name,
-          wonPoints: 0,
-          payPoints: 0,
-          receivePoints: 0
-        };
-      });
+    function renderCurrentRoundSummary(){
+      const body = document.getElementById('currentRoundSummaryBody');
+      const list = getCurrentRoundSummary();
 
-      state.events.forEach(e=>{
-        if(summary[e.scorerId]){
-          summary[e.scorerId].wonPoints += e.point;
-          summary[e.scorerId].receivePoints += e.point;
-        }
-        if(summary[e.payerId]){
-          summary[e.payerId].payPoints += e.point;
-        }
-      });
+      if(!state.players.length){
+        body.innerHTML = '<tr><td colspan="4" class="muted">Chưa có dữ liệu.</td></tr>';
+        return;
+      }
 
-      return summary;
+      body.innerHTML = list.map(x=>`
+        <tr>
+          <td>${escapeHtml(x.name)}</td>
+          <td>${x.gain}</td>
+          <td>${x.lose}</td>
+          <td class="${x.balance>0?'plus':x.balance<0?'minus':'zero'}">${x.balance>0?'+':''}${x.balance}</td>
+        </tr>
+      `).join('');
     }
 
-    function getBalances(){
-      const summary = buildSummary();
-      return state.players.map(p=>{
-        const x = summary[p.id];
-        return {
-          id: p.id,
-          name: p.name,
-          wonPoints: x.wonPoints,
-          payPoints: x.payPoints,
-          receivePoints: x.receivePoints,
-          balance: x.receivePoints - x.payPoints
-        };
-      });
+    function renderOverallSummary(){
+      const body = document.getElementById('overallSummaryBody');
+      const list = getOverallSummary();
+
+      if(!state.players.length){
+        body.innerHTML = '<tr><td colspan="5" class="muted">Chưa có dữ liệu.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = list.map(x=>`
+        <tr>
+          <td>${escapeHtml(x.name)}</td>
+          <td>${x.gain}</td>
+          <td>${x.lose}</td>
+          <td class="${x.balance>0?'plus':x.balance<0?'minus':'zero'}">${x.balance>0?'+':''}${x.balance}</td>
+          <td>${x.balance>0?'+':''}${formatMoney(x.balance * state.pointPrice)}</td>
+        </tr>
+      `).join('');
     }
 
     function calculateSettlementDebts(){
-      const balances = getBalances();
+      const balances = getOverallSummary();
 
       const debtors = balances
         .filter(x => x.balance < 0)
         .map(x => ({
-          id: x.id,
           name: x.name,
           points: Math.abs(x.balance)
         }));
@@ -942,7 +1058,6 @@
       const creditors = balances
         .filter(x => x.balance > 0)
         .map(x => ({
-          id: x.id,
           name: x.name,
           points: x.balance
         }));
@@ -970,44 +1085,6 @@
       return result;
     }
 
-    function renderStats(){
-      const totalPlayers = state.players.length;
-      const totalEvents = state.events.length;
-      const totalPoints = state.events.reduce((s,e)=>s + e.point, 0);
-
-      const balances = getBalances();
-      const netPoints = balances
-        .filter(x => x.balance < 0)
-        .reduce((s,x)=>s + Math.abs(x.balance), 0);
-
-      const totalMoney = netPoints * state.pointPrice;
-
-      document.getElementById('statPlayers').textContent = totalPlayers;
-      document.getElementById('statEvents').textContent = totalEvents;
-      document.getElementById('statPoints').textContent = totalPoints;
-      document.getElementById('statMoney').textContent = formatMoney(totalMoney);
-    }
-
-    function renderSummary(){
-      const body = document.getElementById('summaryBody');
-      if(!state.players.length){
-        body.innerHTML = '<tr><td colspan="5" class="muted">Chưa có dữ liệu.</td></tr>';
-        return;
-      }
-
-      const balances = getBalances();
-
-      body.innerHTML = balances.map(x=>`
-        <tr>
-          <td>${escapeHtml(x.name)}</td>
-          <td>${x.wonPoints}</td>
-          <td>${x.payPoints}</td>
-          <td>${x.receivePoints}</td>
-          <td>${x.balance > 0 ? '+' : ''}${x.balance}</td>
-        </tr>
-      `).join('');
-    }
-
     function renderDebts(){
       const body = document.getElementById('debtBody');
       const debts = calculateSettlementDebts();
@@ -1027,44 +1104,99 @@
       `).join('');
     }
 
-    function removeEvent(id){
-      if(!confirm('Xoá dòng lịch sử này?')) return;
-      snapshotUndo();
-      state.events = state.events.filter(e => e.id !== id);
-      saveState();
-      renderAll();
+    function renderStats(){
+      const totalPlayers = state.players.length;
+      const totalRounds = state.roundHistory.length;
+      const currentEvents = state.currentRound.events.length;
+      const totalMoney = getOverallSummary()
+        .filter(x => x.balance > 0)
+        .reduce((sum, x) => sum + (x.balance * state.pointPrice), 0);
+
+      document.getElementById('statPlayers').textContent = totalPlayers;
+      document.getElementById('statRounds').textContent = totalRounds;
+      document.getElementById('statCurrentEvents').textContent = currentEvents;
+      document.getElementById('statMoney').textContent = formatMoney(totalMoney);
     }
 
-    function clearHistory(){
-      if(!state.events.length) return;
-      if(!confirm('Xoá toàn bộ lịch sử?')) return;
-      snapshotUndo();
-      state.events = [];
-      saveState();
-      renderAll();
-    }
+    function renderCurrentRoundHistory(){
+      const box = document.getElementById('currentRoundHistory');
+      const events = state.currentRound.events;
 
-    function renderHistory(){
-      const box = document.getElementById('historyBox');
-      if(!state.events.length){
-        box.innerHTML = '<div class="empty">Chưa có lịch sử.</div>';
+      if(!events.length){
+        box.innerHTML = '<div class="empty">Chưa có lượt nào trong ván hiện tại.</div>';
         return;
       }
 
-      box.innerHTML = state.events.map((e,idx)=>`
+      box.innerHTML = events.map((e,idx)=>`
         <div class="history-item">
           <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
             <div>
-              <b>#${state.events.length - idx}</b>
+              <b>#${events.length - idx}</b>
               <span class="muted"> | ${escapeHtml(e.time)}</span>
             </div>
-            <button class="danger small" onclick="removeEvent('${e.id}')">Xoá</button>
+            <button class="danger small" onclick="removeCurrentRoundEvent('${e.id}')">Xoá</button>
           </div>
           <div style="margin-top:6px;line-height:1.55;">
-            <b>${escapeHtml(e.scorerName)}</b> ăn <b>bi ${e.ball}</b> được <b>${e.point} điểm</b>.<br>
-            <b>${escapeHtml(e.payerName)}</b> là người trả <b>${e.point}</b> điểm.<br>
-            <span class="muted">Giá điểm lúc ghi: ${formatMoney(e.pointPrice)} / điểm</span>
+            <b>${escapeHtml(e.scorerName)}</b> ăn <b>bi ${e.ball}</b> của <b>${escapeHtml(e.victimName)}</b> được <b>${e.point} điểm</b>.
           </div>
+        </div>
+      `).join('');
+    }
+
+    function renderRoundHistory(){
+      const box = document.getElementById('roundHistoryBox');
+      const rounds = [...state.roundHistory].slice().reverse();
+
+      if(!rounds.length){
+        box.innerHTML = '<div class="empty">Chưa có ván nào được chốt.</div>';
+        return;
+      }
+
+      box.innerHTML = rounds.map(round=>`
+        <div class="round-card">
+          <details>
+            <summary>Ván ${round.number} • ${escapeHtml(round.closedAt)} • ${round.events.length} lượt</summary>
+
+            <div style="margin-top:12px;">
+              <b>Tổng kết ván</b>
+              <div style="overflow:auto;margin-top:8px;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Người chơi</th>
+                      <th>Điểm ăn</th>
+                      <th>Điểm mất</th>
+                      <th>Cân bằng</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${round.summary.map(x=>`
+                      <tr>
+                        <td>${escapeHtml(x.name)}</td>
+                        <td>${x.gain}</td>
+                        <td>${x.lose}</td>
+                        <td class="${x.balance>0?'plus':x.balance<0?'minus':'zero'}">${x.balance>0?'+':''}${x.balance}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <b>Chi tiết lượt trong ván</b>
+              <div class="history" style="margin-top:8px;max-height:280px;">
+                ${round.events.length ? round.events.map(e=>`
+                  <div class="history-item">
+                    <div><span class="muted">${escapeHtml(e.time)}</span></div>
+                    <div style="margin-top:4px;">
+                      <b>${escapeHtml(e.scorerName)}</b> ăn <b>bi ${e.ball}</b> của <b>${escapeHtml(e.victimName)}</b> được <b>${e.point} điểm</b>.
+                    </div>
+                  </div>
+                `).join('') : '<div class="empty">Không có chi tiết.</div>'}
+              </div>
+            </div>
+          </details>
         </div>
       `).join('');
     }
@@ -1078,13 +1210,77 @@
       el.textContent = 'Vòng hiện tại: ' + state.players.map(p=>p.name).join(' → ');
     }
 
+    function renderRoundInfo(){
+      document.getElementById('roundInfo').textContent = `Đang ở ván ${state.currentRound.number}`;
+    }
+
+    function removeCurrentRoundEvent(id){
+      if(!confirm('Xoá lượt này khỏi ván hiện tại?')) return;
+      snapshotUndo();
+      state.currentRound.events = state.currentRound.events.filter(e => e.id !== id);
+      saveState();
+      renderAll();
+    }
+
+    function resetCurrentRound(){
+      if(!state.currentRound.events.length){
+        state.pending = null;
+        renderAll();
+        return;
+      }
+      if(!confirm('Xoá toàn bộ dữ liệu của ván hiện tại?')) return;
+      snapshotUndo();
+      state.currentRound.events = [];
+      state.pending = null;
+      saveState();
+      renderAll();
+    }
+
+    function closeCurrentRound(){
+      if(!state.players.length) return alert('Chưa có người chơi');
+      if(!state.currentRound.events.length) return alert('Ván hiện tại chưa có dữ liệu');
+
+      snapshotUndo();
+
+      const summary = getCurrentRoundSummary();
+
+      state.roundHistory.push({
+        id: uid(),
+        number: state.currentRound.number,
+        closedAt: nowText(),
+        events: [...state.currentRound.events].reverse(),
+        summary
+      });
+
+      state.currentRound = {
+        number: state.currentRound.number + 1,
+        events: []
+      };
+
+      state.pending = null;
+      saveState();
+      renderAll();
+      showToast('Đã chốt ván thành công');
+    }
+
+    function clearRoundHistory(){
+      if(!state.roundHistory.length) return;
+      if(!confirm('Xoá toàn bộ lịch sử các ván đã chốt?')) return;
+      snapshotUndo();
+      state.roundHistory = [];
+      state.currentRound.number = 1;
+      saveState();
+      renderAll();
+    }
+
     function undoLast(){
       if(!state.undoStack.length) return alert('Không có thao tác để hoàn tác');
       const prev = JSON.parse(state.undoStack.pop());
       state.pointPrice = prev.pointPrice;
       state.players = prev.players;
       state.rules = prev.rules;
-      state.events = prev.events;
+      state.currentRound = prev.currentRound;
+      state.roundHistory = prev.roundHistory;
       state.settingsOpen = prev.settingsOpen;
       state.pending = null;
       syncInputs();
@@ -1103,7 +1299,11 @@
         { ball: 6, point: 2 },
         { ball: 9, point: 3 }
       ];
-      state.events = [];
+      state.currentRound = {
+        number: 1,
+        events: []
+      };
+      state.roundHistory = [];
       state.pending = null;
       state.settingsOpen = true;
       syncInputs();
@@ -1119,10 +1319,13 @@
       renderRules();
       renderPending();
       renderScoreBoard();
-      renderStats();
-      renderSummary();
+      renderRoundInfo();
+      renderCurrentRoundSummary();
+      renderCurrentRoundHistory();
+      renderRoundHistory();
+      renderOverallSummary();
       renderDebts();
-      renderHistory();
+      renderStats();
       renderOrderMini();
     }
 
@@ -1133,9 +1336,9 @@
     document.getElementById('pointPrice').addEventListener('input', ()=>{
       state.pointPrice = getPointPrice();
       saveState();
-      renderStats();
+      renderOverallSummary();
       renderDebts();
-      renderHistory();
+      renderStats();
     });
 
     loadState();
