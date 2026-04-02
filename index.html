@@ -4,295 +4,287 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bắn Đền Bi-a</title>
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#0b1220">
   <style>
     :root{
-      --bg:#0b1220;
+      --bg:#0f172a;
       --panel:#1e293b;
-      --panel2:#111827;
       --line:#334155;
       --text:#f8fafc;
       --muted:#94a3b8;
       --green:#22c55e;
       --red:#ef4444;
       --blue:#2563eb;
-      --yellow:#facc15;
       --orange:#f59e0b;
-      --shadow:0 10px 28px rgba(0,0,0,.35);
-      --radius:16px;
     }
 
     *{box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
 
     body{
       margin:0;
-      background:linear-gradient(180deg,#0f172a,#0b1220);
+      padding:10px;
+      background:linear-gradient(180deg,#0f172a,#020617);
       color:var(--text);
-      padding:16px;
     }
 
-    .app{max-width:1200px;margin:auto}
-    h1{margin:0 0 14px;text-align:center;font-size:28px}
+    .app{max-width:980px;margin:auto}
+    h1{
+      text-align:center;
+      margin:0 0 12px;
+      font-size:24px;
+      line-height:1.2;
+    }
 
     .panel{
       background:var(--panel);
-      border:1px solid rgba(148,163,184,.15);
-      border-radius:var(--radius);
-      padding:16px;
-      margin-bottom:14px;
-      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:14px;
+      padding:12px;
+      margin-bottom:10px;
     }
 
-    .toolbar,.toolbar-left{
-      display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+    .toolbar{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
     }
 
-    .toolbar{justify-content:space-between}
-
-    button{
-      border:none;
-      border-radius:10px;
-      padding:10px 12px;
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
-      transition:.15s ease;
+    .toolbar-right{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      align-items:center;
     }
 
-    button:hover{transform:translateY(-1px);opacity:.97}
-    button:active{transform:scale(.98)}
+    .row{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:8px;
+      margin-top:8px;
+    }
 
-    .primary{background:var(--green)}
-    .secondary{background:#334155}
-    .blue{background:var(--blue)}
-    .danger{background:var(--red)}
-    .orange{background:var(--orange)}
-    .ghost{background:transparent;border:1px solid var(--line)}
-    .small{padding:6px 10px;font-size:12px}
-
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:10px}
     .col-12{grid-column:span 12}
     .col-6{grid-column:span 6}
     .col-4{grid-column:span 4}
     .col-3{grid-column:span 3}
 
-    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:5px;
+    }
 
     input,select{
       width:100%;
-      padding:10px 12px;
-      border-radius:10px;
+      padding:9px 10px;
+      border-radius:9px;
       border:1px solid var(--line);
-      background:#0f172a;
+      background:#0b1220;
       color:#fff;
-      outline:none;
+      font-size:14px;
     }
 
+    button{
+      border:none;
+      border-radius:9px;
+      padding:8px 10px;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      font-size:13px;
+      line-height:1.2;
+    }
+
+    .primary{background:var(--green)}
+    .danger{background:var(--red)}
+    .secondary{background:#475569}
+    .blue{background:var(--blue)}
+    .orange{background:var(--orange)}
+    .ghost{background:transparent;border:1px solid var(--line)}
+    .small{padding:5px 8px;font-size:11px}
     .hidden{display:none}
-    .muted{color:var(--muted)}
 
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:12px;
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:8px;
     }
 
-    .stat{
-      background:#0f172a;
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      background:#0b1220;
       border:1px solid var(--line);
-      border-radius:14px;
-      padding:14px;
+      padding:6px 8px;
+      border-radius:999px;
+      flex-wrap:wrap;
+      font-size:13px;
     }
-
-    .stat .k{font-size:13px;color:var(--muted)}
-    .stat .v{font-size:20px;font-weight:800;margin-top:6px}
-    .money{color:var(--yellow)}
 
     .score-grid{
       display:flex;
       flex-direction:column;
-      gap:12px;
-      margin-top:12px;
-    }
-
-    .player-row{
-      background:#0f172a;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-    }
-
-    .player-row-top{
-      display:flex;
-      justify-content:space-between;
       gap:10px;
-      align-items:flex-start;
-      flex-wrap:wrap;
-      margin-bottom:10px;
+      margin-top:10px;
+    }
+
+    .player-card{
+      background:#0b1220;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
     }
 
     .player-name{
-      font-size:20px;
+      font-size:18px;
       font-weight:800;
+      margin-bottom:8px;
     }
 
-    .player-sub{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .ball-buttons{
+    .ball-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
-      gap:10px;
+      grid-template-columns:repeat(auto-fit,minmax(85px,1fr));
+      gap:8px;
     }
 
     .ball-btn{
-      background:linear-gradient(180deg,#3b82f6,#2563eb);
+      min-height:58px;
+      border-radius:10px;
+      background:linear-gradient(180deg,#3b82f6,#1d4ed8);
       border:1px solid rgba(255,255,255,.08);
-      border-radius:12px;
-      min-height:72px;
-      padding:12px;
-      box-shadow:0 8px 18px rgba(37,99,235,.25);
+      padding:6px;
+      font-size:12px;
     }
 
-    .ball-btn.active{
-      outline:3px solid rgba(250,204,21,.6);
-      filter:brightness(1.08);
-    }
-
-    .ball-label{font-size:16px;font-weight:800}
-    .ball-point{font-size:13px;opacity:.95;margin-top:4px}
-
-    .pending{
-      background:linear-gradient(180deg,#12233b,#0f172a);
-      border:1px solid rgba(250,204,21,.25);
-      border-radius:14px;
-      padding:14px;
+    .select-panel{
       margin-top:10px;
+      padding:12px;
+      border-radius:12px;
+      background:#111827;
+      border:1px solid #334155;
     }
 
-    .pending-title{
-      font-size:18px;
-      font-weight:800;
-      margin-bottom:6px;
-    }
-
-    .payer-grid{
+    .victim-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-      gap:10px;
+      grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+      gap:8px;
       margin-top:10px;
     }
 
-    .payer-btn{
-      background:#1d4ed8;
-      border-radius:12px;
-      min-height:62px;
-      padding:12px;
-      font-size:16px;
-      font-weight:800;
+    .victim-btn{
+      min-height:50px;
+      border-radius:10px;
+      background:#1e40af;
       border:1px solid rgba(255,255,255,.08);
-    }
-
-    .payer-btn.selected{
-      outline:3px solid rgba(250,204,21,.7);
-      background:linear-gradient(180deg,#2563eb,#1d4ed8);
+      font-size:13px;
     }
 
     table{
       width:100%;
       border-collapse:collapse;
-      overflow:hidden;
-      border-radius:12px;
+      margin-top:8px;
     }
 
     th,td{
       text-align:left;
-      padding:11px 10px;
+      padding:8px;
       border-bottom:1px solid #24324a;
-      background:#0f172a;
-      font-size:14px;
+      background:#0b1220;
+      font-size:13px;
       vertical-align:top;
     }
 
     th{
-      color:#cbd5e1;
       background:#111827;
+      color:#cbd5e1;
+      font-size:12px;
     }
 
     tr:last-child td{border-bottom:none}
 
     .history{
-      max-height:420px;
+      max-height:300px;
       overflow:auto;
       border:1px solid var(--line);
       background:#0b1220;
-      border-radius:12px;
-      padding:10px;
+      border-radius:10px;
+      padding:8px;
+      margin-top:8px;
     }
 
     .history-item{
       border-bottom:1px dashed #24324a;
-      padding:10px 0;
-      font-size:13px;
+      padding:8px 0;
+      font-size:12px;
     }
 
     .history-item:last-child{border-bottom:none}
 
-    .chip-list{
-      display:flex;
-      flex-wrap:wrap;
+    .plus{color:#22c55e;font-weight:800}
+    .minus{color:#ef4444;font-weight:800}
+    .zero{color:#cbd5e1;font-weight:800}
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
       gap:8px;
-      margin-top:10px;
     }
 
-    .chip{
-      background:#0f172a;
+    .stat{
+      background:#0b1220;
       border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 10px;
-      display:flex;
-      align-items:center;
-      gap:8px;
+      border-radius:12px;
+      padding:10px;
+    }
+
+    .stat .k{font-size:11px;color:var(--muted)}
+    .stat .v{font-size:17px;font-weight:800;margin-top:4px}
+
+    .empty{
+      border:1px dashed var(--line);
+      background:#0b1220;
+      color:var(--muted);
+      border-radius:10px;
+      padding:12px;
+      text-align:center;
       font-size:13px;
     }
 
-    .empty{
-      padding:18px;
-      text-align:center;
-      color:var(--muted);
-      border:1px dashed var(--line);
-      border-radius:12px;
+    .muted{color:var(--muted);font-size:12px}
+
+    details{
       background:#0b1220;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:8px 10px;
+      margin-top:8px;
     }
 
-    .footer{
-      margin-top:8px;
-      text-align:center;
-      color:var(--muted);
-      font-size:12px;
+    summary{
+      cursor:pointer;
+      font-weight:800;
+      font-size:13px;
     }
 
     .toast{
       position:fixed;
-      right:18px;
-      bottom:18px;
+      right:12px;
+      bottom:12px;
       background:#052e16;
       color:#dcfce7;
-      border:1px solid rgba(34,197,94,.35);
-      padding:12px 14px;
-      border-radius:12px;
-      box-shadow:var(--shadow);
+      border:1px solid rgba(34,197,94,.3);
+      border-radius:10px;
+      padding:10px 12px;
       opacity:0;
       transform:translateY(10px);
+      transition:.2s ease;
       pointer-events:none;
-      transition:.25s ease;
-      z-index:9999;
-      max-width:360px;
-      font-size:14px;
+      z-index:999;
+      font-size:13px;
     }
 
     .toast.show{
@@ -300,37 +292,17 @@
       transform:translateY(0);
     }
 
-    .plus{color:#22c55e;font-weight:800}
-    .minus{color:#ef4444;font-weight:800}
-    .zero{color:#cbd5e1;font-weight:800}
-
-    details{
-      background:#0f172a;
-      border:1px solid #24324a;
-      border-radius:12px;
-      padding:10px 12px;
-      margin-bottom:10px;
-    }
-
-    summary{
-      cursor:pointer;
-      font-weight:800;
-      outline:none;
-    }
-
-    .round-card{
-      background:#0f172a;
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:12px;
-      margin-bottom:12px;
-    }
-
     @media (max-width:760px){
       .col-6,.col-4,.col-3{grid-column:span 12}
       .stats{grid-template-columns:repeat(2,1fr)}
-      .ball-buttons{grid-template-columns:repeat(2,1fr)}
-      .payer-grid{grid-template-columns:repeat(2,1fr)}
+      h1{font-size:21px}
+      .panel{padding:10px}
+      button{padding:7px 9px;font-size:12px}
+      .ball-grid{grid-template-columns:repeat(auto-fit,minmax(78px,1fr))}
+      .ball-btn{min-height:54px;font-size:11px}
+      .victim-grid{grid-template-columns:repeat(2,1fr)}
+      .victim-btn{min-height:46px}
+      th,td{padding:7px;font-size:12px}
     }
   </style>
 </head>
@@ -340,39 +312,37 @@
 
     <div class="panel">
       <div class="toolbar">
-        <div class="toolbar-left">
-          <button class="secondary" onclick="toggleSettings()" id="toggleSettingsBtn">⚙️ Mở cài đặt</button>
-          <button class="orange" onclick="undoLast()">↩️ Hoàn tác</button>
-          <button class="danger" onclick="resetAll()">🧹 Reset tất cả</button>
+        <div>
+          <b>⚙️ Cài đặt</b>
+          <div class="muted" id="orderText"></div>
         </div>
-        <div class="muted" id="orderMini"></div>
+        <div class="toolbar-right">
+          <button class="secondary" id="toggleSettingsBtn" onclick="toggleSettings()">🙈 Ẩn cài đặt</button>
+          <button class="orange" onclick="undoLast()">↩️ Hoàn tác</button>
+          <button class="danger" onclick="resetAll()">🧹 Reset</button>
+        </div>
       </div>
-    </div>
 
-    <div id="settingsPanel">
-      <div class="panel">
-        <b>👥 Người chơi & thứ tự vòng</b>
-        <div class="grid" style="margin-top:10px;">
+      <div id="settingsPanel">
+        <div class="row">
           <div class="col-4">
             <label>Thêm người chơi</label>
-            <input id="playerName" type="text" placeholder="Ví dụ: Khanh" />
+            <input id="playerName" type="text" placeholder="Ví dụ: Khanh">
           </div>
           <div class="col-4">
             <label>Giá tiền / 1 điểm</label>
-            <input id="pointPrice" type="number" min="0" value="10000" />
+            <input id="pointPrice" type="number" min="0" value="10000">
           </div>
           <div class="col-4">
             <label>Đặt người đầu vòng</label>
             <select id="headPlayerSelect"></select>
           </div>
 
-          <div class="col-12">
-            <div class="toolbar-left">
-              <button class="primary" onclick="addPlayer()">➕ Thêm người chơi</button>
-              <button class="secondary" onclick="rotateLeft()">↺ Xoay trái</button>
-              <button class="secondary" onclick="rotateRight()">↻ Xoay phải</button>
-              <button class="blue" onclick="applyHeadPlayer()">🎯 Đặt người đầu vòng</button>
-            </div>
+          <div class="col-12" style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="primary" onclick="addPlayer()">➕ Thêm người chơi</button>
+            <button class="secondary" onclick="rotateLeft()">↺ Trái</button>
+            <button class="secondary" onclick="rotateRight()">↻ Phải</button>
+            <button class="blue" onclick="applyHeadPlayer()">🎯 Đặt đầu vòng</button>
           </div>
 
           <div class="col-12">
@@ -380,25 +350,31 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
-          <b>⚙️ Luật bi ăn</b>
-          <div class="toolbar-left">
-            <button class="secondary small" onclick="applyPreset('369')">3-6-9</button>
-            <button class="secondary small" onclick="applyPreset('59')">5-9</button>
-            <button class="secondary small" onclick="applyPreset('10bi')">10 bi</button>
-          </div>
+    <div class="panel">
+      <div class="toolbar">
+        <div>
+          <b>🎯 Luật bi ăn</b>
+          <div class="muted">Có thể ẩn phần này cho gọn trên mobile</div>
         </div>
+        <div class="toolbar-right">
+          <button class="secondary" id="toggleRulesBtn" onclick="toggleRules()">🙈 Ẩn luật bi ăn</button>
+          <button class="ghost small" onclick="applyPreset('369')">3-6-9</button>
+          <button class="ghost small" onclick="applyPreset('59')">5-9</button>
+          <button class="ghost small" onclick="applyPreset('10bi')">10 bi</button>
+        </div>
+      </div>
 
-        <div class="grid" style="margin-top:10px;">
+      <div id="rulesPanel">
+        <div class="row">
           <div class="col-4">
             <label>Bi</label>
-            <input id="ballNumber" type="number" min="1" placeholder="Ví dụ: 9" />
+            <input id="ballNumber" type="number" min="1" placeholder="Ví dụ: 9">
           </div>
           <div class="col-4">
             <label>Điểm</label>
-            <input id="ballPoint" type="number" min="1" placeholder="Ví dụ: 3" />
+            <input id="ballPoint" type="number" min="1" placeholder="Ví dụ: 3">
           </div>
           <div class="col-4">
             <label>&nbsp;</label>
@@ -424,88 +400,81 @@
     <div class="panel">
       <div class="toolbar">
         <div>
-          <b>🎯 Ván hiện tại</b>
-          <div class="footer">Bấm người ăn → chọn bi → chọn người bị ăn điểm</div>
+          <b>🎮 Ván hiện tại</b>
+          <div class="muted" id="roundInfo"></div>
         </div>
-        <div class="toolbar-left">
+        <div class="toolbar-right">
           <button class="primary" onclick="closeCurrentRound()">✅ Chốt ván</button>
-          <button class="danger" onclick="resetCurrentRound()">🗑️ Xoá ván hiện tại</button>
+          <button class="danger" onclick="resetCurrentRound()">🗑️ Xoá ván</button>
         </div>
       </div>
 
-      <div id="roundInfo" class="footer"></div>
-      <div id="pendingPanel" class="pending hidden"></div>
+      <div id="pendingBox"></div>
       <div id="scoreBoard" class="score-grid"></div>
     </div>
 
     <div class="panel">
       <b>📌 Tổng kết ván hiện tại</b>
-      <div style="overflow:auto;margin-top:10px;">
-        <table>
-          <thead>
-            <tr>
-              <th>Người chơi</th>
-              <th>Điểm ăn trong ván</th>
-              <th>Điểm mất trong ván</th>
-              <th>Cân bằng ván này</th>
-            </tr>
-          </thead>
-          <tbody id="currentRoundSummaryBody"></tbody>
-        </table>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Người chơi</th>
+            <th>Ăn</th>
+            <th>Mất</th>
+            <th>Cân bằng</th>
+          </tr>
+        </thead>
+        <tbody id="currentSummaryBody"></tbody>
+      </table>
     </div>
 
     <div class="panel">
       <div class="stats">
-        <div class="stat"><div class="k">Tổng người chơi</div><div class="v" id="statPlayers">0</div></div>
-        <div class="stat"><div class="k">Tổng số ván đã chốt</div><div class="v" id="statRounds">0</div></div>
-        <div class="stat"><div class="k">Lượt trong ván hiện tại</div><div class="v" id="statCurrentEvents">0</div></div>
-        <div class="stat"><div class="k">Tổng tiền chốt cuối</div><div class="v money" id="statMoney">0đ</div></div>
+        <div class="stat"><div class="k">Người chơi</div><div class="v" id="statPlayers">0</div></div>
+        <div class="stat"><div class="k">Ván đã chốt</div><div class="v" id="statRounds">0</div></div>
+        <div class="stat"><div class="k">Lượt hiện tại</div><div class="v" id="statEvents">0</div></div>
+        <div class="stat"><div class="k">Tổng tiền</div><div class="v" id="statMoney">0đ</div></div>
       </div>
     </div>
 
     <div class="panel">
       <b>📊 Tổng chung tất cả các ván</b>
-      <div style="overflow:auto;margin-top:10px;">
-        <table>
-          <thead>
-            <tr>
-              <th>Người chơi</th>
-              <th>Tổng điểm ăn</th>
-              <th>Tổng điểm mất</th>
-              <th>Cân bằng</th>
-              <th>Tiền</th>
-            </tr>
-          </thead>
-          <tbody id="overallSummaryBody"></tbody>
-        </table>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Người chơi</th>
+            <th>Ăn</th>
+            <th>Mất</th>
+            <th>Cân bằng</th>
+            <th>Tiền</th>
+          </tr>
+        </thead>
+        <tbody id="overallBody"></tbody>
+      </table>
     </div>
 
     <div class="panel">
-      <b>💸 Công nợ chốt cuối</b>
-      <div style="overflow:auto;margin-top:10px;">
-        <table>
-          <thead>
-            <tr>
-              <th>Người mất tiền</th>
-              <th>Người nhận tiền</th>
-              <th>Điểm</th>
-              <th>Tiền</th>
-            </tr>
-          </thead>
-          <tbody id="debtBody"></tbody>
-        </table>
-      </div>
+      <b>💸 Công nợ cuối</b>
+      <table>
+        <thead>
+          <tr>
+            <th>Người trả</th>
+            <th>Người nhận</th>
+            <th>Điểm</th>
+            <th>Tiền</th>
+          </tr>
+        </thead>
+        <tbody id="debtBody"></tbody>
+      </table>
     </div>
 
     <div class="panel">
-      <b>🕘 Lịch sử lượt của ván hiện tại</b>
-      <div id="currentRoundHistory" class="history" style="margin-top:10px;"></div>
+      <b>🕘 Lịch sử lượt ván hiện tại</b>
+      <div id="currentHistory" class="history"></div>
     </div>
 
     <div class="panel">
-      <div class="toolbar" style="margin-bottom:10px;">
+      <div class="toolbar">
         <b>📚 Lịch sử các ván đã chốt</b>
         <button class="ghost small" onclick="clearRoundHistory()">Xoá lịch sử ván</button>
       </div>
@@ -516,7 +485,7 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'bida_round_history_full_v1';
+    const STORAGE_KEY = 'bida_app_mobile_v1';
 
     let state = {
       pointPrice: 10000,
@@ -531,9 +500,10 @@
         events: []
       },
       roundHistory: [],
-      undoStack: [],
       pending: null,
-      settingsOpen: true
+      undoStack: [],
+      settingsOpen: true,
+      rulesOpen: true
     };
 
     function uid(){
@@ -566,16 +536,19 @@
       if(!raw) return;
       try{
         const parsed = JSON.parse(raw);
-        state.pointPrice = parsed.pointPrice || 10000;
-        state.players = Array.isArray(parsed.players) ? parsed.players : [];
-        state.rules = Array.isArray(parsed.rules) ? parsed.rules : [];
-        state.roundHistory = Array.isArray(parsed.roundHistory) ? parsed.roundHistory : [];
-        state.undoStack = Array.isArray(parsed.undoStack) ? parsed.undoStack : [];
-        state.settingsOpen = typeof parsed.settingsOpen === 'boolean' ? parsed.settingsOpen : true;
-        state.currentRound = parsed.currentRound && Array.isArray(parsed.currentRound.events)
-          ? parsed.currentRound
-          : { number: (state.roundHistory.length + 1), events: [] };
-        state.pending = null;
+        state = {
+          pointPrice: parsed.pointPrice || 10000,
+          players: Array.isArray(parsed.players) ? parsed.players : [],
+          rules: Array.isArray(parsed.rules) ? parsed.rules : [],
+          currentRound: parsed.currentRound && Array.isArray(parsed.currentRound.events)
+            ? parsed.currentRound
+            : { number: 1, events: [] },
+          roundHistory: Array.isArray(parsed.roundHistory) ? parsed.roundHistory : [],
+          pending: null,
+          undoStack: Array.isArray(parsed.undoStack) ? parsed.undoStack : [],
+          settingsOpen: typeof parsed.settingsOpen === 'boolean' ? parsed.settingsOpen : true,
+          rulesOpen: typeof parsed.rulesOpen === 'boolean' ? parsed.rulesOpen : true
+        };
       }catch(e){
         console.error(e);
       }
@@ -588,27 +561,24 @@
         rules: state.rules,
         currentRound: state.currentRound,
         roundHistory: state.roundHistory,
-        settingsOpen: state.settingsOpen
+        settingsOpen: state.settingsOpen,
+        rulesOpen: state.rulesOpen
       }));
       if(state.undoStack.length > 50) state.undoStack.shift();
     }
 
-    function syncInputs(){
-      document.getElementById('pointPrice').value = state.pointPrice;
-    }
-
-    function showToast(message){
-      const t = document.getElementById('toast');
-      t.textContent = message;
-      t.classList.add('show');
-      clearTimeout(showToast._timer);
-      showToast._timer = setTimeout(() => t.classList.remove('show'), 1600);
+    function showToast(msg){
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(()=>el.classList.remove('show'),1500);
     }
 
     function getPointPrice(){
-      const val = Math.max(0, parseInt(document.getElementById('pointPrice').value, 10) || 0);
-      state.pointPrice = val;
-      return val;
+      const v = Math.max(0, parseInt(document.getElementById('pointPrice').value, 10) || 0);
+      state.pointPrice = v;
+      return v;
     }
 
     function toggleSettings(){
@@ -620,12 +590,34 @@
     function renderSettings(){
       const panel = document.getElementById('settingsPanel');
       const btn = document.getElementById('toggleSettingsBtn');
+      if(!panel || !btn) return;
+
       if(state.settingsOpen){
         panel.classList.remove('hidden');
         btn.textContent = '🙈 Ẩn cài đặt';
       }else{
         panel.classList.add('hidden');
         btn.textContent = '⚙️ Mở cài đặt';
+      }
+    }
+
+    function toggleRules(){
+      state.rulesOpen = !state.rulesOpen;
+      saveState();
+      renderRulesPanel();
+    }
+
+    function renderRulesPanel(){
+      const panel = document.getElementById('rulesPanel');
+      const btn = document.getElementById('toggleRulesBtn');
+      if(!panel || !btn) return;
+
+      if(state.rulesOpen){
+        panel.classList.remove('hidden');
+        btn.textContent = '🙈 Ẩn luật bi ăn';
+      }else{
+        panel.classList.add('hidden');
+        btn.textContent = '🎯 Mở luật bi ăn';
       }
     }
 
@@ -647,27 +639,24 @@
       const p = state.players.find(x => x.id === id);
       if(!p) return;
       if(!confirm(`Xoá ${p.name}?`)) return;
-      snapshotUndo();
 
+      snapshotUndo();
       state.players = state.players.filter(x => x.id !== id);
       state.currentRound.events = state.currentRound.events.filter(e => e.scorerId !== id && e.victimId !== id);
-      state.roundHistory = state.roundHistory.map(round => ({
-        ...round,
-        events: round.events.filter(e => e.scorerId !== id && e.victimId !== id),
-        summary: round.summary.filter(s => s.playerId !== id)
-      })).filter(round => round.summary.length > 0);
-
-      if(state.pending && (state.pending.scorerId === id || state.pending.victimId === id)){
-        state.pending = null;
-      }
+      state.roundHistory = state.roundHistory.map(r => ({
+        ...r,
+        events: r.events.filter(e => e.scorerId !== id && e.victimId !== id),
+        summary: r.summary.filter(s => s.playerId !== id)
+      }));
+      if(state.pending && state.pending.scorerId === id) state.pending = null;
 
       saveState();
       renderAll();
     }
 
-    function movePlayer(id, direction){
+    function movePlayer(id, dir){
       const i = state.players.findIndex(p => p.id === id);
-      const j = i + direction;
+      const j = i + dir;
       if(i < 0 || j < 0 || j >= state.players.length) return;
       snapshotUndo();
       [state.players[i], state.players[j]] = [state.players[j], state.players[i]];
@@ -693,15 +682,19 @@
       renderAll();
     }
 
-    function renderPlayersBox(){
+    function renderPlayers(){
       const box = document.getElementById('playersBox');
+      const sel = document.getElementById('headPlayerSelect');
+
       if(!state.players.length){
         box.innerHTML = '<div class="empty">Chưa có người chơi.</div>';
+        sel.innerHTML = '<option value="">Chưa có người chơi</option>';
+        document.getElementById('orderText').textContent = '';
         return;
       }
+
       box.innerHTML = `
-        <label>Thứ tự vòng hiện tại</label>
-        <div class="chip-list">
+        <div class="chips">
           ${state.players.map((p,i)=>`
             <div class="chip">
               <span>${i+1}.</span>
@@ -713,13 +706,9 @@
           `).join('')}
         </div>
       `;
-    }
 
-    function renderHeadPlayerSelect(){
-      const sel = document.getElementById('headPlayerSelect');
-      sel.innerHTML = state.players.length
-        ? state.players.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('')
-        : '<option value="">Chưa có người chơi</option>';
+      sel.innerHTML = state.players.map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
+      document.getElementById('orderText').textContent = 'Thứ tự vòng: ' + state.players.map(p => p.name).join(' → ');
     }
 
     function applyHeadPlayer(){
@@ -738,7 +727,8 @@
       const point = parseInt(document.getElementById('ballPoint').value, 10);
       if(isNaN(ball) || ball <= 0) return alert('Bi không hợp lệ');
       if(isNaN(point) || point <= 0) return alert('Điểm không hợp lệ');
-      if(state.rules.some(r => r.ball === ball)) return alert('Bi này đã tồn tại');
+      if(state.rules.some(r => r.ball === ball)) return alert('Bi đã tồn tại');
+
       snapshotUndo();
       state.rules.push({ ball, point });
       state.rules.sort((a,b)=>a.ball-b.ball);
@@ -748,36 +738,35 @@
       renderAll();
     }
 
-    function editRule(ball){
-      const rule = state.rules.find(r => r.ball === ball);
-      if(!rule) return;
-      const nextBall = prompt('Sửa số bi:', rule.ball);
-      if(nextBall === null) return;
-      const newBall = parseInt(nextBall, 10);
-      if(isNaN(newBall) || newBall <= 0) return alert('Số bi không hợp lệ');
-
-      const nextPoint = prompt(`Sửa số điểm cho bi ${newBall}:`, rule.point);
-      if(nextPoint === null) return;
-      const newPoint = parseInt(nextPoint, 10);
-      if(isNaN(newPoint) || newPoint <= 0) return alert('Điểm không hợp lệ');
-
-      if(state.rules.some(r => r.ball === newBall && r.ball !== ball)){
-        return alert('Bi mới đã tồn tại');
-      }
-
-      snapshotUndo();
-      rule.ball = newBall;
-      rule.point = newPoint;
-      state.rules.sort((a,b)=>a.ball-b.ball);
-      saveState();
-      renderAll();
-    }
-
     function removeRule(ball){
       if(!confirm(`Xoá luật bi ${ball}?`)) return;
       snapshotUndo();
       state.rules = state.rules.filter(r => r.ball !== ball);
       if(state.pending && state.pending.ball === ball) state.pending = null;
+      saveState();
+      renderAll();
+    }
+
+    function editRule(ball){
+      const rule = state.rules.find(r => r.ball === ball);
+      if(!rule) return;
+
+      const nextBall = prompt('Sửa số bi:', rule.ball);
+      if(nextBall === null) return;
+      const nb = parseInt(nextBall, 10);
+      if(isNaN(nb) || nb <= 0) return alert('Bi không hợp lệ');
+
+      const nextPoint = prompt('Sửa số điểm:', rule.point);
+      if(nextPoint === null) return;
+      const np = parseInt(nextPoint, 10);
+      if(isNaN(np) || np <= 0) return alert('Điểm không hợp lệ');
+
+      if(state.rules.some(r => r.ball === nb && r.ball !== ball)) return alert('Bi đã tồn tại');
+
+      snapshotUndo();
+      rule.ball = nb;
+      rule.point = np;
+      state.rules.sort((a,b)=>a.ball-b.ball);
       saveState();
       renderAll();
     }
@@ -816,64 +805,48 @@
         body.innerHTML = '<tr><td colspan="3" class="muted">Chưa có luật bi.</td></tr>';
         return;
       }
+
       body.innerHTML = [...state.rules].sort((a,b)=>a.ball-b.ball).map(r=>`
         <tr>
           <td>${r.ball}</td>
           <td>${r.point}</td>
           <td>
-            <div class="toolbar-left">
-              <button class="ghost small" onclick="editRule(${r.ball})">Sửa</button>
-              <button class="danger small" onclick="removeRule(${r.ball})">Xoá</button>
-            </div>
+            <button class="ghost small" onclick="editRule(${r.ball})">Sửa</button>
+            <button class="danger small" onclick="removeRule(${r.ball})">Xoá</button>
           </td>
         </tr>
       `).join('');
     }
 
-    function startPendingScore(scorerId, ball){
+    function startPending(scorerId, ball){
       if(state.players.length < 2) return alert('Cần ít nhất 2 người chơi');
       const scorer = state.players.find(p => p.id === scorerId);
       const rule = state.rules.find(r => r.ball === ball);
-      if(!scorer || !rule) return alert('Dữ liệu không hợp lệ');
+      if(!scorer || !rule) return;
 
       state.pending = {
         scorerId: scorer.id,
         scorerName: scorer.name,
         ball: rule.ball,
-        point: rule.point,
-        victimId: null,
-        victimName: null
+        point: rule.point
       };
 
       renderPending();
-      renderScoreBoard();
     }
 
     function cancelPending(){
       state.pending = null;
       renderPending();
-      renderScoreBoard();
     }
 
     function chooseVictim(victimId){
       if(!state.pending) return;
+
+      const scorer = state.players.find(p => p.id === state.pending.scorerId);
       const victim = state.players.find(p => p.id === victimId);
-      const scorer = state.players.find(p => p.id === state.pending.scorerId);
-      if(!victim || !scorer) return;
-      if(victim.id === scorer.id) return alert('Không thể ăn điểm của chính mình');
 
-      state.pending.victimId = victim.id;
-      state.pending.victimName = victim.name;
-      renderPending();
-    }
-
-    function confirmPending(){
-      if(!state.pending) return;
-      if(!state.pending.victimId) return alert('Bạn chưa chọn người bị ăn điểm');
-
-      const victim = state.players.find(p => p.id === state.pending.victimId);
-      const scorer = state.players.find(p => p.id === state.pending.scorerId);
-      if(!victim || !scorer) return;
+      if(!scorer || !victim) return;
+      if(scorer.id === victim.id) return alert('Không thể chọn chính mình');
 
       snapshotUndo();
 
@@ -885,8 +858,7 @@
         victimId: victim.id,
         victimName: victim.name,
         ball: state.pending.ball,
-        point: state.pending.point,
-        pointPrice: getPointPrice()
+        point: state.pending.point
       });
 
       const msg = `${scorer.name} ăn bi ${state.pending.ball} của ${victim.name} (${state.pending.point} điểm)`;
@@ -896,9 +868,63 @@
       showToast(msg);
     }
 
-    function getRoundSummaryFromEvents(events){
-      const map = {};
+    function renderPending(){
+      const box = document.getElementById('pendingBox');
+      if(!state.pending){
+        box.innerHTML = '';
+        return;
+      }
 
+      const victims = state.players.filter(p => p.id !== state.pending.scorerId);
+
+      box.innerHTML = `
+        <div class="select-panel">
+          <b>🎯 ${escapeHtml(state.pending.scorerName)} ăn bi ${state.pending.ball} = ${state.pending.point} điểm</b>
+          <div class="muted" style="margin-top:6px;">Chọn người bị ăn điểm. Bấm là ghi luôn.</div>
+          <div class="victim-grid">
+            ${victims.map(v=>`
+              <button class="victim-btn" onclick="chooseVictim('${v.id}')">${escapeHtml(v.name)}</button>
+            `).join('')}
+          </div>
+          <div style="margin-top:10px;">
+            <button class="ghost" onclick="cancelPending()">❌ Huỷ</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderScoreBoard(){
+      const box = document.getElementById('scoreBoard');
+
+      if(state.players.length < 2){
+        box.innerHTML = '<div class="empty">Cần ít nhất 2 người chơi để ghi điểm.</div>';
+        return;
+      }
+
+      if(!state.rules.length){
+        box.innerHTML = '<div class="empty">Chưa có luật bi.</div>';
+        return;
+      }
+
+      const rules = [...state.rules].sort((a,b)=>a.ball-b.ball);
+
+      box.innerHTML = state.players.map(player => `
+        <div class="player-card">
+          <div class="player-name">${escapeHtml(player.name)}</div>
+          <div class="ball-grid">
+            ${rules.map(rule => `
+              <button class="ball-btn" onclick="startPending('${player.id}', ${rule.ball})">
+                <div><b>Bi ${rule.ball}</b></div>
+                <div>+${rule.point} điểm</div>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function getSummaryFromEvents(events){
+      const map = {};
       state.players.forEach(p=>{
         map[p.id] = {
           playerId: p.id,
@@ -923,8 +949,8 @@
       return state.players.map(p => map[p.id]);
     }
 
-    function getCurrentRoundSummary(){
-      return getRoundSummaryFromEvents(state.currentRound.events);
+    function getCurrentSummary(){
+      return getSummaryFromEvents(state.currentRound.events);
     }
 
     function getOverallSummary(){
@@ -932,90 +958,17 @@
         ...state.currentRound.events,
         ...state.roundHistory.flatMap(r => r.events || [])
       ];
-      return getRoundSummaryFromEvents(allEvents);
+      return getSummaryFromEvents(allEvents);
     }
 
-    function renderPending(){
-      const box = document.getElementById('pendingPanel');
-      if(!state.pending){
-        box.classList.add('hidden');
-        box.innerHTML = '';
-        return;
-      }
-
-      const victims = state.players.filter(p => p.id !== state.pending.scorerId);
-
-      box.classList.remove('hidden');
-      box.innerHTML = `
-        <div class="pending-title">🎯 ${escapeHtml(state.pending.scorerName)} ăn bi ${state.pending.ball} = ${state.pending.point} điểm</div>
-        <div class="muted">Chọn người bị ăn điểm trong lượt này.</div>
-
-        <div class="payer-grid">
-          ${victims.map(p=>`
-            <button class="payer-btn ${p.id===state.pending.victimId?'selected':''}" onclick="chooseVictim('${p.id}')">
-              ${escapeHtml(p.name)}
-              ${p.id===state.pending.victimId?'<div style="font-size:12px;font-weight:700;margin-top:4px;">Đã chọn</div>':''}
-            </button>
-          `).join('')}
-        </div>
-
-        <div class="toolbar-left" style="margin-top:12px;">
-          <button class="primary" onclick="confirmPending()">✅ Ghi lượt này</button>
-          <button class="ghost" onclick="cancelPending()">❌ Huỷ</button>
-        </div>
-      `;
-    }
-
-    function renderScoreBoard(){
-      const box = document.getElementById('scoreBoard');
-
-      if(state.players.length < 2){
-        box.innerHTML = '<div class="empty">Cần ít nhất 2 người chơi để ghi điểm.</div>';
-        return;
-      }
-
-      if(!state.rules.length){
-        box.innerHTML = '<div class="empty">Chưa có luật bi.</div>';
-        return;
-      }
-
-      const rules = [...state.rules].sort((a,b)=>a.ball-b.ball);
-
-      box.innerHTML = state.players.map(player=>{
-        return `
-          <div class="player-row">
-            <div class="player-row-top">
-              <div>
-                <div class="player-name">${escapeHtml(player.name)}</div>
-                <div class="player-sub">Bấm bi để ghi người này là người ăn</div>
-              </div>
-            </div>
-            <div class="ball-buttons">
-              ${rules.map(rule=>{
-                const active = state.pending && state.pending.scorerId===player.id && state.pending.ball===rule.ball;
-                return `
-                  <button class="ball-btn ${active?'active':''}" onclick="startPendingScore('${player.id}',${rule.ball})">
-                    <div class="ball-label">Bi ${rule.ball}</div>
-                    <div class="ball-point">+${rule.point} điểm</div>
-                  </button>
-                `;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderCurrentRoundSummary(){
-      const body = document.getElementById('currentRoundSummaryBody');
-      const list = getCurrentRoundSummary();
-
+    function renderCurrentSummary(){
+      const body = document.getElementById('currentSummaryBody');
       if(!state.players.length){
         body.innerHTML = '<tr><td colspan="4" class="muted">Chưa có dữ liệu.</td></tr>';
         return;
       }
 
-      body.innerHTML = list.map(x=>`
+      body.innerHTML = getCurrentSummary().map(x=>`
         <tr>
           <td>${escapeHtml(x.name)}</td>
           <td>${x.gain}</td>
@@ -1025,16 +978,14 @@
       `).join('');
     }
 
-    function renderOverallSummary(){
-      const body = document.getElementById('overallSummaryBody');
-      const list = getOverallSummary();
-
+    function renderOverall(){
+      const body = document.getElementById('overallBody');
       if(!state.players.length){
         body.innerHTML = '<tr><td colspan="5" class="muted">Chưa có dữ liệu.</td></tr>';
         return;
       }
 
-      body.innerHTML = list.map(x=>`
+      body.innerHTML = getOverallSummary().map(x=>`
         <tr>
           <td>${escapeHtml(x.name)}</td>
           <td>${x.gain}</td>
@@ -1045,41 +996,34 @@
       `).join('');
     }
 
-    function calculateSettlementDebts(){
-      const balances = getOverallSummary();
+    function calculateDebts(){
+      const summary = getOverallSummary();
 
-      const debtors = balances
-        .filter(x => x.balance < 0)
-        .map(x => ({
-          name: x.name,
-          points: Math.abs(x.balance)
-        }));
+      const payers = summary.filter(x => x.balance < 0).map(x => ({
+        name: x.name,
+        points: Math.abs(x.balance)
+      }));
 
-      const creditors = balances
-        .filter(x => x.balance > 0)
-        .map(x => ({
-          name: x.name,
-          points: x.balance
-        }));
+      const receivers = summary.filter(x => x.balance > 0).map(x => ({
+        name: x.name,
+        points: x.balance
+      }));
 
       const result = [];
       let i = 0, j = 0;
 
-      while(i < debtors.length && j < creditors.length){
-        const pay = Math.min(debtors[i].points, creditors[j].points);
-
+      while(i < payers.length && j < receivers.length){
+        const p = Math.min(payers[i].points, receivers[j].points);
         result.push({
-          payerName: debtors[i].name,
-          receiverName: creditors[j].name,
-          points: pay,
-          money: pay * state.pointPrice
+          payer: payers[i].name,
+          receiver: receivers[j].name,
+          points: p,
+          money: p * state.pointPrice
         });
-
-        debtors[i].points -= pay;
-        creditors[j].points -= pay;
-
-        if(debtors[i].points === 0) i++;
-        if(creditors[j].points === 0) j++;
+        payers[i].points -= p;
+        receivers[j].points -= p;
+        if(payers[i].points === 0) i++;
+        if(receivers[j].points === 0) j++;
       }
 
       return result;
@@ -1087,57 +1031,40 @@
 
     function renderDebts(){
       const body = document.getElementById('debtBody');
-      const debts = calculateSettlementDebts();
+      const debts = calculateDebts();
 
       if(!debts.length){
         body.innerHTML = '<tr><td colspan="4" class="muted">Không có công nợ.</td></tr>';
         return;
       }
 
-      body.innerHTML = debts.map(x=>`
+      body.innerHTML = debts.map(d=>`
         <tr>
-          <td>${escapeHtml(x.payerName)}</td>
-          <td>${escapeHtml(x.receiverName)}</td>
-          <td>${x.points}</td>
-          <td>${formatMoney(x.money)}</td>
+          <td>${escapeHtml(d.payer)}</td>
+          <td>${escapeHtml(d.receiver)}</td>
+          <td>${d.points}</td>
+          <td>${formatMoney(d.money)}</td>
         </tr>
       `).join('');
     }
 
-    function renderStats(){
-      const totalPlayers = state.players.length;
-      const totalRounds = state.roundHistory.length;
-      const currentEvents = state.currentRound.events.length;
-      const totalMoney = getOverallSummary()
-        .filter(x => x.balance > 0)
-        .reduce((sum, x) => sum + (x.balance * state.pointPrice), 0);
-
-      document.getElementById('statPlayers').textContent = totalPlayers;
-      document.getElementById('statRounds').textContent = totalRounds;
-      document.getElementById('statCurrentEvents').textContent = currentEvents;
-      document.getElementById('statMoney').textContent = formatMoney(totalMoney);
-    }
-
-    function renderCurrentRoundHistory(){
-      const box = document.getElementById('currentRoundHistory');
+    function renderCurrentHistory(){
+      const box = document.getElementById('currentHistory');
       const events = state.currentRound.events;
 
       if(!events.length){
-        box.innerHTML = '<div class="empty">Chưa có lượt nào trong ván hiện tại.</div>';
+        box.innerHTML = '<div class="empty">Chưa có lượt nào.</div>';
         return;
       }
 
       box.innerHTML = events.map((e,idx)=>`
         <div class="history-item">
-          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;">
-            <div>
-              <b>#${events.length - idx}</b>
-              <span class="muted"> | ${escapeHtml(e.time)}</span>
-            </div>
-            <button class="danger small" onclick="removeCurrentRoundEvent('${e.id}')">Xoá</button>
+          <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+            <div><b>#${events.length - idx}</b> <span class="muted">| ${escapeHtml(e.time)}</span></div>
+            <button class="danger small" onclick="removeCurrentEvent('${e.id}')">Xoá</button>
           </div>
-          <div style="margin-top:6px;line-height:1.55;">
-            <b>${escapeHtml(e.scorerName)}</b> ăn <b>bi ${e.ball}</b> của <b>${escapeHtml(e.victimName)}</b> được <b>${e.point} điểm</b>.
+          <div style="margin-top:5px;">
+            <b>${escapeHtml(e.scorerName)}</b> ăn <b>bi ${e.ball}</b> của <b>${escapeHtml(e.victimName)}</b> được <b>${e.point} điểm</b>
           </div>
         </div>
       `).join('');
@@ -1148,74 +1075,67 @@
       const rounds = [...state.roundHistory].slice().reverse();
 
       if(!rounds.length){
-        box.innerHTML = '<div class="empty">Chưa có ván nào được chốt.</div>';
+        box.innerHTML = '<div class="empty">Chưa có ván nào đã chốt.</div>';
         return;
       }
 
-      box.innerHTML = rounds.map(round=>`
-        <div class="round-card">
-          <details>
-            <summary>Ván ${round.number} • ${escapeHtml(round.closedAt)} • ${round.events.length} lượt</summary>
+      box.innerHTML = rounds.map(r=>`
+        <details>
+          <summary>Ván ${r.number} • ${escapeHtml(r.closedAt)} • ${r.events.length} lượt</summary>
 
-            <div style="margin-top:12px;">
-              <b>Tổng kết ván</b>
-              <div style="overflow:auto;margin-top:8px;">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Người chơi</th>
-                      <th>Điểm ăn</th>
-                      <th>Điểm mất</th>
-                      <th>Cân bằng</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${round.summary.map(x=>`
-                      <tr>
-                        <td>${escapeHtml(x.name)}</td>
-                        <td>${x.gain}</td>
-                        <td>${x.lose}</td>
-                        <td class="${x.balance>0?'plus':x.balance<0?'minus':'zero'}">${x.balance>0?'+':''}${x.balance}</td>
-                      </tr>
-                    `).join('')}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Người chơi</th>
+                <th>Ăn</th>
+                <th>Mất</th>
+                <th>Cân bằng</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${r.summary.map(x=>`
+                <tr>
+                  <td>${escapeHtml(x.name)}</td>
+                  <td>${x.gain}</td>
+                  <td>${x.lose}</td>
+                  <td class="${x.balance>0?'plus':x.balance<0?'minus':'zero'}">${x.balance>0?'+':''}${x.balance}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
 
-            <div style="margin-top:12px;">
-              <b>Chi tiết lượt trong ván</b>
-              <div class="history" style="margin-top:8px;max-height:280px;">
-                ${round.events.length ? round.events.map(e=>`
-                  <div class="history-item">
-                    <div><span class="muted">${escapeHtml(e.time)}</span></div>
-                    <div style="margin-top:4px;">
-                      <b>${escapeHtml(e.scorerName)}</b> ăn <b>bi ${e.ball}</b> của <b>${escapeHtml(e.victimName)}</b> được <b>${e.point} điểm</b>.
-                    </div>
-                  </div>
-                `).join('') : '<div class="empty">Không có chi tiết.</div>'}
+          <div class="history">
+            ${r.events.map(e=>`
+              <div class="history-item">
+                <div class="muted">${escapeHtml(e.time)}</div>
+                <div style="margin-top:4px;">
+                  <b>${escapeHtml(e.scorerName)}</b> ăn <b>bi ${e.ball}</b> của <b>${escapeHtml(e.victimName)}</b> được <b>${e.point} điểm</b>
+                </div>
               </div>
-            </div>
-          </details>
-        </div>
+            `).join('')}
+          </div>
+        </details>
       `).join('');
     }
 
-    function renderOrderMini(){
-      const el = document.getElementById('orderMini');
-      if(!state.players.length){
-        el.textContent = 'Chưa có người chơi';
-        return;
-      }
-      el.textContent = 'Vòng hiện tại: ' + state.players.map(p=>p.name).join(' → ');
+    function renderStats(){
+      document.getElementById('statPlayers').textContent = state.players.length;
+      document.getElementById('statRounds').textContent = state.roundHistory.length;
+      document.getElementById('statEvents').textContent = state.currentRound.events.length;
+
+      const totalMoney = getOverallSummary()
+        .filter(x => x.balance > 0)
+        .reduce((sum, x) => sum + (x.balance * state.pointPrice), 0);
+
+      document.getElementById('statMoney').textContent = formatMoney(totalMoney);
     }
 
     function renderRoundInfo(){
       document.getElementById('roundInfo').textContent = `Đang ở ván ${state.currentRound.number}`;
     }
 
-    function removeCurrentRoundEvent(id){
-      if(!confirm('Xoá lượt này khỏi ván hiện tại?')) return;
+    function removeCurrentEvent(id){
+      if(!confirm('Xoá lượt này?')) return;
       snapshotUndo();
       state.currentRound.events = state.currentRound.events.filter(e => e.id !== id);
       saveState();
@@ -1228,7 +1148,7 @@
         renderAll();
         return;
       }
-      if(!confirm('Xoá toàn bộ dữ liệu của ván hiện tại?')) return;
+      if(!confirm('Xoá toàn bộ ván hiện tại?')) return;
       snapshotUndo();
       state.currentRound.events = [];
       state.pending = null;
@@ -1242,30 +1162,28 @@
 
       snapshotUndo();
 
-      const summary = getCurrentRoundSummary();
-
       state.roundHistory.push({
         id: uid(),
         number: state.currentRound.number,
         closedAt: nowText(),
         events: [...state.currentRound.events].reverse(),
-        summary
+        summary: getCurrentSummary()
       });
 
       state.currentRound = {
         number: state.currentRound.number + 1,
         events: []
       };
-
       state.pending = null;
+
       saveState();
       renderAll();
-      showToast('Đã chốt ván thành công');
+      showToast('Đã chốt ván');
     }
 
     function clearRoundHistory(){
       if(!state.roundHistory.length) return;
-      if(!confirm('Xoá toàn bộ lịch sử các ván đã chốt?')) return;
+      if(!confirm('Xoá toàn bộ lịch sử ván?')) return;
       snapshotUndo();
       state.roundHistory = [];
       state.currentRound.number = 1;
@@ -1281,52 +1199,55 @@
       state.rules = prev.rules;
       state.currentRound = prev.currentRound;
       state.roundHistory = prev.roundHistory;
-      state.settingsOpen = prev.settingsOpen;
+      state.settingsOpen = typeof prev.settingsOpen === 'boolean' ? prev.settingsOpen : true;
+      state.rulesOpen = typeof prev.rulesOpen === 'boolean' ? prev.rulesOpen : true;
       state.pending = null;
-      syncInputs();
+      document.getElementById('pointPrice').value = state.pointPrice;
       saveState();
       renderAll();
-      showToast('Đã hoàn tác thao tác gần nhất');
+      showToast('Đã hoàn tác');
     }
 
     function resetAll(){
       if(!confirm('Reset toàn bộ dữ liệu?')) return;
       snapshotUndo();
-      state.pointPrice = 10000;
-      state.players = [];
-      state.rules = [
-        { ball: 3, point: 1 },
-        { ball: 6, point: 2 },
-        { ball: 9, point: 3 }
-      ];
-      state.currentRound = {
-        number: 1,
-        events: []
+      state = {
+        pointPrice: 10000,
+        players: [],
+        rules: [
+          { ball: 3, point: 1 },
+          { ball: 6, point: 2 },
+          { ball: 9, point: 3 }
+        ],
+        currentRound: {
+          number: 1,
+          events: []
+        },
+        roundHistory: [],
+        pending: null,
+        undoStack: state.undoStack,
+        settingsOpen: true,
+        rulesOpen: true
       };
-      state.roundHistory = [];
-      state.pending = null;
-      state.settingsOpen = true;
-      syncInputs();
+      document.getElementById('pointPrice').value = state.pointPrice;
       saveState();
       renderAll();
     }
 
     function renderAll(){
-      if(state.players.length === 0) state.settingsOpen = true;
       renderSettings();
-      renderPlayersBox();
-      renderHeadPlayerSelect();
+      renderRulesPanel();
+      renderPlayers();
       renderRules();
       renderPending();
       renderScoreBoard();
-      renderRoundInfo();
-      renderCurrentRoundSummary();
-      renderCurrentRoundHistory();
-      renderRoundHistory();
-      renderOverallSummary();
+      renderCurrentSummary();
+      renderOverall();
       renderDebts();
+      renderCurrentHistory();
+      renderRoundHistory();
       renderStats();
-      renderOrderMini();
+      renderRoundInfo();
     }
 
     document.getElementById('playerName').addEventListener('keydown', e=>{
@@ -1336,27 +1257,14 @@
     document.getElementById('pointPrice').addEventListener('input', ()=>{
       state.pointPrice = getPointPrice();
       saveState();
-      renderOverallSummary();
+      renderOverall();
       renderDebts();
       renderStats();
     });
 
     loadState();
-    syncInputs();
-
-    if(state.players.length > 0 && state.settingsOpen === true){
-      state.settingsOpen = false;
-    }
-
+    document.getElementById('pointPrice').value = state.pointPrice;
     renderAll();
-  </script>
-
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("./service-worker.js");
-      });
-    }
   </script>
 </body>
 </html>
