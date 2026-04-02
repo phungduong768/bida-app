@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bắn Đền Bi-a</title>
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0b1220">
   <style>
     :root{
       --bg:#0b1220;
@@ -20,13 +22,16 @@
       --shadow:0 10px 28px rgba(0,0,0,.35);
       --radius:16px;
     }
+
     *{box-sizing:border-box;font-family:system-ui,-apple-system,sans-serif}
+
     body{
       margin:0;
       background:linear-gradient(180deg,#0f172a,#0b1220);
       color:var(--text);
       padding:16px;
     }
+
     .app{max-width:1150px;margin:auto}
     h1{margin:0 0 14px;text-align:center;font-size:28px}
 
@@ -42,6 +47,7 @@
     .toolbar,.toolbar-left{
       display:flex;gap:8px;flex-wrap:wrap;align-items:center;
     }
+
     .toolbar{justify-content:space-between}
 
     button{
@@ -53,8 +59,10 @@
       cursor:pointer;
       transition:.15s ease;
     }
+
     button:hover{transform:translateY(-1px);opacity:.97}
     button:active{transform:scale(.98)}
+
     .primary{background:var(--green)}
     .secondary{background:#334155}
     .blue{background:var(--blue)}
@@ -70,6 +78,7 @@
     .col-3{grid-column:span 3}
 
     label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+
     input,select{
       width:100%;
       padding:10px 12px;
@@ -88,12 +97,14 @@
       grid-template-columns:repeat(4,1fr);
       gap:12px;
     }
+
     .stat{
       background:#0f172a;
       border:1px solid var(--line);
       border-radius:14px;
       padding:14px;
     }
+
     .stat .k{font-size:13px;color:var(--muted)}
     .stat .v{font-size:20px;font-weight:800;margin-top:6px}
     .money{color:var(--yellow)}
@@ -104,12 +115,14 @@
       gap:12px;
       margin-top:12px;
     }
+
     .player-row{
       background:#0f172a;
       border:1px solid var(--line);
       border-radius:14px;
       padding:12px;
     }
+
     .player-row-top{
       display:flex;
       justify-content:space-between;
@@ -118,20 +131,24 @@
       flex-wrap:wrap;
       margin-bottom:10px;
     }
+
     .player-name{
       font-size:20px;
       font-weight:800;
     }
+
     .player-sub{
       margin-top:4px;
       color:var(--muted);
       font-size:13px;
     }
+
     .ball-buttons{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
       gap:10px;
     }
+
     .ball-btn{
       background:linear-gradient(180deg,#3b82f6,#2563eb);
       border:1px solid rgba(255,255,255,.08);
@@ -140,10 +157,12 @@
       padding:12px;
       box-shadow:0 8px 18px rgba(37,99,235,.25);
     }
+
     .ball-btn.active{
       outline:3px solid rgba(250,204,21,.6);
       filter:brightness(1.08);
     }
+
     .ball-label{font-size:16px;font-weight:800}
     .ball-point{font-size:13px;opacity:.95;margin-top:4px}
 
@@ -154,17 +173,20 @@
       padding:14px;
       margin-top:10px;
     }
+
     .pending-title{
       font-size:18px;
       font-weight:800;
       margin-bottom:6px;
     }
+
     .payer-grid{
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
       gap:10px;
       margin-top:10px;
     }
+
     .payer-btn{
       background:#1d4ed8;
       border-radius:12px;
@@ -174,6 +196,7 @@
       font-weight:800;
       border:1px solid rgba(255,255,255,.08);
     }
+
     .payer-btn.suggest{
       background:linear-gradient(180deg,#16a34a,#15803d);
     }
@@ -184,6 +207,7 @@
       overflow:hidden;
       border-radius:12px;
     }
+
     th,td{
       text-align:left;
       padding:11px 10px;
@@ -191,10 +215,12 @@
       background:#0f172a;
       font-size:14px;
     }
+
     th{
       color:#cbd5e1;
       background:#111827;
     }
+
     tr:last-child td{border-bottom:none}
 
     .history{
@@ -205,11 +231,13 @@
       border-radius:12px;
       padding:10px;
     }
+
     .history-item{
       border-bottom:1px dashed #24324a;
       padding:10px 0;
       font-size:13px;
     }
+
     .history-item:last-child{border-bottom:none}
 
     .chip-list{
@@ -218,6 +246,7 @@
       gap:8px;
       margin-top:10px;
     }
+
     .chip{
       background:#0f172a;
       border:1px solid var(--line);
@@ -263,6 +292,7 @@
       max-width:340px;
       font-size:14px;
     }
+
     .toast.show{
       opacity:1;
       transform:translateY(0);
@@ -825,6 +855,7 @@
         box.innerHTML = '<div class="empty">Cần ít nhất 2 người chơi để ghi điểm.</div>';
         return;
       }
+
       if(!state.rules.length){
         box.innerHTML = '<div class="empty">Chưa có luật bi.</div>';
         return;
@@ -1115,6 +1146,14 @@
     }
 
     renderAll();
+  </script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js");
+      });
+    }
   </script>
 </body>
 </html>
