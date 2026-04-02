@@ -1,10 +1,10 @@
-const CACHE_NAME = 'bida-app-cache-v1';
+const CACHE_NAME = 'bida-app-cache-v2';
 const URLS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  '/bida-app/',
+  '/bida-app/index.html',
+  '/bida-app/manifest.webmanifest',
+  '/bida-app/icons/icon-192.png',
+  '/bida-app/icons/icon-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -30,8 +30,6 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      return cached || fetch(event.request);
-    })
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
