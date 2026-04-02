@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Bi-a App</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bi-a">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .box {
+      max-width: 500px;
+      background: #121a2b;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    h1 {
+      margin-top: 0;
+    }
+    button {
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    button:hover {
+      background: #16a34a;
+    }
+    #count {
+      font-size: 40px;
+      font-weight: bold;
+      margin: 16px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Bi-a App</h1>
+    <p>Đây là app mẫu chạy bằng GitHub Pages và cài trên iPhone.</p>
+    <div id="count">0</div>
+    <button onclick="increase()">Tăng điểm</button>
+  </div>
+
+  <script>
+    let count = localStorage.getItem("count") || 0;
+    const countEl = document.getElementById("count");
+    countEl.textContent = count;
+
+    function increase() {
+      count++;
+      localStorage.setItem("count", count);
+      countEl.textContent = count;
+    }
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./service-worker.js");
+      });
+    }
+  </script>
+</body>
+</html>
